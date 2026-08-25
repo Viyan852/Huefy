@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huefy — Find your perfect colors.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico">
+<style>
+/* CSS */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#F8F9FC;--bg2:#FFFFFF;--bg3:#F1F3F8;--fg:#0F172A;--fg2:#475569;--fg3:#94A3B8;
+--accent:#4D96FF;--accent2:#845EC2;--border:#E2E8F0;--border2:#CBD5E1;
+--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+--shadow-md:0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);
+--shadow-lg:0 10px 25px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.04);
+--shadow-xl:0 20px 50px -12px rgba(0,0,0,.12);
+--radius:12px;--radius-lg:16px;--radius-xl:24px;
+--glass:rgba(255,255,255,.7);--glass-border:rgba(255,255,255,.3);
+--transition:all .25s cubic-bezier(.4,0,.2,1);
+--font:'Inter','Product Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+[data-theme="dark"]{
+--bg:#0B0F1A;--bg2:#141925;--bg3:#1C2233;--fg:#F1F5F9;--fg2:#94A3B8;--fg3:#475569;
+--accent:#6BA3FF;--accent2:#A78BFA;--border:#1E293B;--border2:#334155;
+--shadow:0 1px 3px rgba(0,0,0,.2);
+--shadow-md:0 4px 6px rgba(0,0,0,.25);
+--shadow-lg:0 10px 25px rgba(0,0,0,.3);
+--shadow-xl:0 20px 50px rgba(0,0,0,.4);
+--glass:rgba(20,25,37,.8);--glass-border:rgba(255,255,255,.06);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font);background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit;border:none;outline:none;background:none;color:inherit}
+img{max-width:100%;display:block}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* Header */
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--glass);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--glass-border);transition:var(--transition)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.25rem;letter-spacing:-.02em}
+.logo svg{width:32px;height:32px}
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{padding:8px 14px;border-radius:8px;font-size:.875rem;font-weight:500;color:var(--fg2);transition:var(--transition)}
+.nav a:hover,.nav a.active{color:var(--fg);background:var(--bg3)}
+.header-actions{display:flex;align-items:center;gap:8px}
+.theme-btn{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--bg3);transition:var(--transition)}
+.theme-btn:hover{background:var(--border2);transform:scale(1.05)}
+.mobile-toggle{display:none;width:40px;height:40px;border-radius:10px;align-items:center;justify-content:center;background:var(--bg3)}
+.mobile-toggle span{display:block;width:18px;height:2px;background:var(--fg);border-radius:1px;transition:var(--transition);position:relative}
+.mobile-toggle span::before,.mobile-toggle span::after{content:'';position:absolute;width:18px;height:2px;background:var(--fg);border-radius:1px;left:0;transition:var(--transition)}
+.mobile-toggle span::before{top:-6px}
+.mobile-toggle span::after{top:6px}
+
+/* Hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 80px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35;animation:blobFloat 8s ease-in-out infinite}
+.hero-blob:nth-child(1){width:500px;height:500px;background:#FF6B6B;top:-10%;left:-5%;animation-delay:0s}
+.hero-blob:nth-child(2){width:400px;height:400px;background:#4D96FF;top:10%;right:-5%;animation-delay:-2s}
+.hero-blob:nth-child(3){width:350px;height:350px;background:#FFD93D;bottom:-5%;left:30%;animation-delay:-4s}
+.hero-blob:nth-child(4){width:300px;height:300px;background:#845EC2;bottom:10%;right:20%;animation-delay:-6s}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,20px) scale(.95)}}
+.hero-content{position:relative;z-index:1;max-width:700px}
+.hero h1{font-size:clamp(3rem,8vw,5.5rem);font-weight:900;letter-spacing:-.04em;line-height:1;margin-bottom:16px;background:linear-gradient(135deg,#FF6B6B,#FFD93D,#6BCB77,#4D96FF,#845EC2);background-size:200% 200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientShift 6s ease infinite}
+@keyframes gradientShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.hero .tagline{font-size:clamp(1.1rem,2.5vw,1.5rem);font-weight:500;color:var(--fg2);margin-bottom:12px}
+.hero .desc{font-size:1rem;color:var(--fg3);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:var(--radius);font-size:.875rem;font-weight:600;transition:var(--transition);white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 15px rgba(77,150,255,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(77,150,255,.4)}
+.btn-secondary{background:var(--bg2);color:var(--fg);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-sm{padding:8px 16px;font-size:.8rem;border-radius:8px}
+.btn-icon{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:var(--bg3);transition:var(--transition)}
+.btn-icon:hover{background:var(--border2);transform:scale(1.08)}
+.hero-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);animation:scrollBounce 2s ease-in-out infinite;z-index:1}
+@keyframes scrollBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* Sections */
+section{padding:80px 0}
+.section-header{text-align:center;margin-bottom:48px}
+.section-header h2{font-size:clamp(1.75rem,4vw,2.5rem);font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+.section-header p{color:var(--fg2);font-size:1rem;max-width:500px;margin:0 auto}
+.section-label{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:12px;background:rgba(77,150,255,.08);padding:6px 14px;border-radius:100px}
+
+/* Generator */
+#generator{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.gen-actions{display:flex;gap:10px;justify-content:center;margin-bottom:32px;flex-wrap:wrap}
+.palette-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.palette-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition);cursor:grab;position:relative}
+.palette-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.palette-card.dragging{opacity:.5;transform:scale(.95)}
+.palette-card.drag-over{border-color:var(--accent);box-shadow:0 0 0 2px rgba(77,150,255,.3)}
+.color-preview{height:140px;position:relative;transition:background-color .4s ease}
+.color-preview .lock-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.25);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#fff;opacity:0;transition:var(--transition)}
+.palette-card:hover .lock-btn{opacity:1}
+.lock-btn.locked{opacity:1;background:rgba(0,0,0,.5)}
+.color-preview .remove-btn{position:absolute;top:8px;left:8px;width:32px;height:32px;border-radius:8px;background:rgba(0,0,0,.25);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#fff;opacity:0;transition:var(--transition)}
+.palette-card:hover .remove-btn{opacity:1}
+.color-info{padding:14px}
+.color-hex{font-size:1rem;font-weight:700;letter-spacing:.02em;margin-bottom:2px;text-transform:uppercase}
+.color-rgb,.color-hsl{font-size:.75rem;color:var(--fg3);margin-bottom:2px}
+.color-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center}
+.color-actions .btn-icon{width:30px;height:30px;font-size:.7rem}
+.color-actions .picker-wrap{position:relative;width:30px;height:30px;border-radius:8px;overflow:hidden;cursor:pointer}
+.color-actions .picker-wrap input[type="color"]{position:absolute;inset:-4px;width:calc(100% + 8px);height:calc(100% + 8px);cursor:pointer;border:none;padding:0}
+.add-card{border:2px dashed var(--border);border-radius:var(--radius-lg);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px;cursor:pointer;transition:var(--transition);color:var(--fg3);gap:8px}
+.add-card:hover{border-color:var(--accent);color:var(--accent);background:rgba(77,150,255,.03)}
+.shuffle-anim{animation:shufflePop .4s ease}
+@keyframes shufflePop{0%{transform:scale(1) rotate(0)}30%{transform:scale(.92) rotate(-2deg)}60%{transform:scale(1.04) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+
+/* Library */
+.lib-controls{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;align-items:center}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box input{width:100%;padding:12px 16px 12px 42px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);font-size:.875rem;transition:var(--transition)}
+.search-box input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(77,150,255,.1)}
+.search-box svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--fg3);width:18px;height:18px}
+.family-filters{display:flex;gap:6px;flex-wrap:wrap}
+.family-btn{padding:8px 16px;border-radius:100px;font-size:.8rem;font-weight:500;background:var(--bg2);border:1px solid var(--border);transition:var(--transition);display:flex;align-items:center;gap:6px}
+.family-btn:hover{border-color:var(--border2)}
+.family-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.family-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px}
+.color-swatch{aspect-ratio:1;border-radius:var(--radius);cursor:pointer;transition:var(--transition);position:relative;border:2px solid transparent}
+.color-swatch:hover{transform:scale(1.12);z-index:2;box-shadow:var(--shadow-lg)}
+.color-swatch .swatch-tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:4px 10px;border-radius:6px;font-size:.7rem;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:var(--transition)}
+.color-swatch:hover .swatch-tip{opacity:1}
+.lib-empty{text-align:center;padding:60px 20px;color:var(--fg3)}
+
+/* Templates */
+.templates-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.template-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition)}
+.template-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.template-preview{display:flex;height:64px}
+.template-preview div{flex:1}
+.template-info{padding:14px;display:flex;align-items:center;justify-content:space-between}
+.template-name{font-weight:600;font-size:.95rem}
+
+/* Favorites */
+.fav-empty{text-align:center;padding:60px 20px;color:var(--fg3)}
+.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.fav-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition)}
+.fav-card:hover{box-shadow:var(--shadow-md)}
+.fav-preview{display:flex;height:56px}
+.fav-preview div{flex:1}
+.fav-info{padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
+.fav-meta{font-size:.8rem;color:var(--fg2)}
+.fav-hexes{font-size:.7rem;color:var(--fg3);margin-top:2px}
+.fav-actions{display:flex;gap:6px}
+
+/* Export */
+.export-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.export-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;transition:var(--transition)}
+.export-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.export-card h3{font-size:1rem;font-weight:700;margin-bottom:4px}
+.export-card p{font-size:.8rem;color:var(--fg3);margin-bottom:16px}
+.export-output{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'SF Mono',Monaco,Courier New,monospace;font-size:.72rem;line-height:1.6;max-height:200px;overflow:auto;margin-bottom:12px;color:var(--fg2);white-space:pre-wrap;word-break:break-all}
+.export-btns{display:flex;gap:8px}
+
+/* Footer */
+.footer{border-top:1px solid var(--border);padding:40px 0;text-align:center}
+.footer p{color:var(--fg3);font-size:.85rem}
+.footer .heart{color:#FF6B6B}
+
+/* Toast */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 20px;background:var(--fg);color:var(--bg);border-radius:var(--radius);font-size:.85rem;font-weight:500;box-shadow:var(--shadow-xl);animation:toastIn .3s ease;max-width:320px;display:flex;align-items:center;gap:8px}
+.toast.out{animation:toastOut .3s ease forwards}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(-10px) scale(.95)}}
+
+/* Share Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;max-width:480px;width:100%;transform:scale(.95);transition:transform .25s ease;box-shadow:var(--shadow-xl)}
+.modal-overlay.active .modal{transform:scale(1)}
+.modal h3{font-size:1.25rem;font-weight:700;margin-bottom:8px}
+.modal p{font-size:.875rem;color:var(--fg2);margin-bottom:20px}
+.modal-input{display:flex;gap:8px}
+.modal-input input{flex:1;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:.85rem}
+.modal-input input:focus{border-color:var(--accent)}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--bg3);transition:var(--transition)}
+.modal-close:hover{background:var(--border2)}
+
+/* Mobile Nav */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--glass);backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+.mobile-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.mobile-nav a{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.65rem;font-weight:500;color:var(--fg3);padding:6px 12px;border-radius:8px;transition:var(--transition)}
+.mobile-nav a svg{width:20px;height:20px}
+.mobile-nav a.active{color:var(--accent)}
+
+/* Shortcuts hint */
+.shortcuts-hint{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.shortcut{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--fg3)}
+.shortcut kbd{padding:2px 8px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;font-family:var(--font);font-size:.7rem;font-weight:600}
+
+/* Responsive */
+@media(max-width:768px){
+.nav{display:none}
+.mobile-toggle{display:flex}
+section{padding:60px 0}
+.palette-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.color-preview{height:110px}
+.templates-grid{grid-template-columns:1fr}
+.fav-grid{grid-template-columns:1fr}
+.export-grid{grid-template-columns:1fr}
+.color-grid{grid-template-columns:repeat(auto-fill,minmax(55px,1fr));gap:6px}
+.shortcuts-hint{display:none}
+.mobile-nav{display:block}
+body{padding-bottom:70px}
+.toast-container{bottom:80px;right:12px;left:12px}
+.toast{max-width:100%}
+.hero{padding:100px 20px 60px;min-height:auto}
+}
+@media(max-width:480px){
+.palette-grid{grid-template-columns:repeat(2,1fr)}
+.hero h1{font-size:2.5rem}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--fg3)}
+
+/* Focus visible */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- HTML -->
+<header class="header" role="banner">
+<div class="container header-inner">
+<a href="#" class="logo" aria-label="Huefy Home">
+<svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#FF6B6B"/><stop offset=".25" stop-color="#FFD93D"/><stop offset=".5" stop-color="#6BCB77"/><stop offset=".75" stop-color="#4D96FF"/><stop offset="1" stop-color="#845EC2"/></linearGradient></defs>
+<circle cx="16" cy="16" r="14" fill="url(#logoGrad)"/>
+<path d="M11 10c0-1.5 1-3 2.5-3s2.5 1.5 2.5 3-1.5 4-2.5 5.5C12 14 11 11.5 11 10z" fill="#fff" opacity=".9"/>
+<path d="M16 10c0-1.5 1-3 2.5-3S21 8.5 21 10s-1.5 4-2.5 5.5C17 14 16 11.5 16 10z" fill="#fff" opacity=".9"/>
+<path d="M8 17c0-1.5 1-3 2.5-3s2.5 1.5 2.5 3-1.5 4-2.5 5.5C9 21 8 18.5 8 17z" fill="#fff" opacity=".9"/>
+<path d="M13.5 17c0-1.5 1-3 2.5-3s2.5 1.5 2.5 3-1.5 4-2.5 5.5c-1-1.5-2.5-4-2.5-5.5z" fill="#fff" opacity=".9"/>
+<path d="M19 17c0-1.5 1-3 2.5-3S24 15.5 24 17s-1.5 4-2.5 5.5C20 21 19 18.5 19 17z" fill="#fff" opacity=".9"/>
+</svg>
+Huefy
+</a>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+<a href="#generator" class="active">Generator</a>
+<a href="#library">Library</a>
+<a href="#templates">Templates</a>
+<a href="#favorites">Favorites</a>
+<a href="#export">Export</a>
+</nav>
+<div class="header-actions">
+<button class="theme-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+<svg id="sunIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+<svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+</button>
+<button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span></button>
+</div>
+</div>
+</header>
+
+<section class="hero" id="hero">
+<div class="hero-bg" aria-hidden="true">
+<div class="hero-blob"></div>
+<div class="hero-blob"></div>
+<div class="hero-blob"></div>
+<div class="hero-blob"></div>
+</div>
+<div class="hero-content">
+<h1>Huefy</h1>
+<p class="tagline">Find your perfect colors.</p>
+<p class="desc">Discover, create, customize, save, and share beautiful color palettes for your next project.</p>
+<div class="hero-btns">
+<button class="btn btn-primary" onclick="generatePalette();scrollToEl('#generator')">Generate Palette</button>
+<button class="btn btn-secondary" onclick="scrollToEl('#library')">Explore Colors</button>
+</div>
+</div>
+<div class="hero-scroll" aria-hidden="true">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--fg3)" stroke-width="2" stroke-linecap="round"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+</div>
+</section>
+
+<section id="generator">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Palette Generator</div>
+<h2>Create Your Palette</h2>
+<p>Press Space to shuffle, lock colors you love, drag to reorder.</p>
+</div>
+<div class="gen-actions">
+<button class="btn btn-primary" onclick="generatePalette()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+Generate Palette
+</button>
+<button class="btn btn-secondary" onclick="openShareModal()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+Share
+</button>
+<button class="btn btn-secondary" onclick="saveFavorite()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+Save
+</button>
+</div>
+<div class="shortcuts-hint">
+<span class="shortcut"><kbd>Space</kbd> Generate</span>
+<span class="shortcut"><kbd>S</kbd> Save</span>
+<span class="shortcut"><kbd>L</kbd> Lock all</span>
+<span class="shortcut"><kbd>D</kbd> Dark mode</span>
+</div>
+<div class="palette-grid" id="paletteGrid"></div>
+</div>
+</section>
+
+<section id="library">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Color Library</div>
+<h2>350 Curated Colors</h2>
+<p>Browse, search, and click any color to add it to your palette.</p>
+</div>
+<div class="lib-controls">
+<div class="search-box">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input type="text" id="colorSearch" placeholder="Search colors by name or hex..." aria-label="Search colors">
+</div>
+</div>
+<div class="family-filters" id="familyFilters"></div>
+<div class="color-grid" id="colorGrid"></div>
+<div class="lib-empty" id="libEmpty" style="display:none">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--fg3)" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 12px"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+<p>No colors match your search.</p>
+</div>
+</div>
+</section>
+
+<section id="templates">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Templates</div>
+<h2>Ready-Made Palettes</h2>
+<p>Start with a curated palette and make it yours.</p>
+</div>
+<div class="templates-grid" id="templatesGrid"></div>
+</div>
+</section>
+
+<section id="favorites">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Favorites</div>
+<h2>Saved Palettes</h2>
+<p>Your saved palettes, stored locally in your browser.</p>
+</div>
+<div id="favContent"></div>
+</div>
+</section>
+
+<section id="export">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Export Tools</div>
+<h2>Export Your Palette</h2>
+<p>Download or copy your palette in multiple formats.</p>
+</div>
+<div class="export-grid" id="exportGrid"></div>
+</div>
+</section>
+
+<footer class="footer" role="contentinfo">
+<div class="container">
+<p>Built with <span class="heart">&#9829;</span> by Huefy &mdash; Find your perfect colors.</p>
+</div>
+</footer>
+
+<nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
+<div class="mobile-nav-inner">
+<a href="#generator" class="active" data-section="generator">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+Generate
+</a>
+<a href="#library" data-section="library">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+Library
+</a>
+<a href="#templates" data-section="templates">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+Templates
+</a>
+<a href="#favorites" data-section="favorites">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+Saved
+</a>
+<a href="#export" data-section="export">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+Export
+</a>
+</div>
+</nav>
+
+<div class="modal-overlay" id="shareModal">
+<div class="modal" style="position:relative">
+<button class="modal-close" onclick="closeShareModal()" aria-label="Close">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+<h3>Share Palette</h3>
+<p>Copy this link to share your palette with anyone.</p>
+<div class="modal-input">
+<input type="text" id="shareUrl" readonly aria-label="Share URL">
+<button class="btn btn-primary btn-sm" onclick="copyShareUrl()">Copy</button>
+</div>
+</div>
+</div>
+
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script>
+<!-- DATA -->
+
+const COLOR_FAMILIES = {
+  red: { label: 'Red', emoji: '\u{1F534}', dot: '#FF6B6B' },
+  orange: { label: 'Orange', emoji: '\u{1F7E0}', dot: '#FFB347' },
+  yellow: { label: 'Yellow', emoji: '\u{1F7E1}', dot: '#FFD93D' },
+  green: { label: 'Green', emoji: '\u{1F7E2}', dot: '#6BCB77' },
+  blue: { label: 'Blue', emoji: '\u{1F535}', dot: '#4D96FF' },
+  purple: { label: 'Purple', emoji: '\u{1F7E3}', dot: '#845EC2' },
+  pink: { label: 'Pink', emoji: '\u{1FA7A}', dot: '#FF6F91' },
+  brown: { label: 'Brown', emoji: '\u{1F7E4}', dot: '#C4956A' }
+};
+
+const COLORS = [
+  // Red (44)
+  {hex:'#FFF0F0',name:'Snow Red',family:'red'},{hex:'#FFD6D6',name:'Blush Pink',family:'red'},
+  {hex:'#FFBCBC',name:'Light Coral',family:'red'},{hex:'#FFA3A3',name:'Rose Pink',family:'red'},
+  {hex:'#FF8A8A',name:'Salmon Pink',family:'red'},{hex:'#FF7070',name:'Coral',family:'red'},
+  {hex:'#FF5757',name:'Tomato',family:'red'},{hex:'#FF3D3D',name:'Bright Red',family:'red'},
+  {hex:'#FF2424',name:'Pure Red',family:'red'},{hex:'#E61111',name:'Vivid Red',family:'red'},
+  {hex:'#CC0000',name:'Classic Red',family:'red'},{hex:'#B30000',name:'Deep Red',family:'red'},
+  {hex:'#990000',name:'Crimson',family:'red'},{hex:'#800000',name:'Dark Red',family:'red'},
+  {hex:'#660000',name:'Maroon',family:'red'},{hex:'#4D0000',name:'Blood Red',family:'red'},
+  {hex:'#FDE2E2',name:'Pale Rose',family:'red'},{hex:'#F9C4C4',name:'Light Rose',family:'red'},
+  {hex:'#F5A6A6',name:'Soft Rose',family:'red'},{hex:'#F08888',name:'Muted Coral',family:'red'},
+  {hex:'#EB6A6A',name:'Warm Coral',family:'red'},{hex:'#E64D4D',name:'Medium Red',family:'red'},
+  {hex:'#D63333',name:'Rich Red',family:'red'},{hex:'#C72222',name:'Strong Red',family:'red'},
+  {hex:'#B81111',name:'Dark Scarlet',family:'red'},{hex:'#A90000',name:'Scarlet',family:'red'},
+  {hex:'#8B0000',name:'Dark Scarlet',family:'red'},{hex:'#7A0000',name:'Oxblood',family:'red'},
+  {hex:'#680000',name:'Deep Maroon',family:'red'},{hex:'#570000',name:'Wine',family:'red'},
+  {hex:'#FFCDD2',name:'Pink Cloud',family:'red'},{hex:'#EF9A9A',name:'Pink Rose',family:'red'},
+  {hex:'#E57373',name:'Light Red',family:'red'},{hex:'#EF5350',name:'Red Accent',family:'red'},
+  {hex:'#F44336',name:'Material Red',family:'red'},{hex:'#E53935',name:'Red 700',family:'red'},
+  {hex:'#C62828',name:'Red 900',family:'red'},{hex:'#B71C1C',name:'Red Dark',family:'red'},
+  {hex:'#FF8A80',name:'Red A100',family:'red'},{hex:'#FF5252',name:'Red A200',family:'red'},
+  {hex:'#FF1744',name:'Red A400',family:'red'},{hex:'#D50000',name:'Red A700',family:'red'},
+  {hex:'#FFE0E0',name:'Red Tint',family:'red'},{hex:'#FCE4EC',name:'Red Mist',family:'red'},
+  // Orange (44)
+  {hex:'#FFF5E6',name:'Peach Cream',family:'orange'},{hex:'#FFE8CC',name:'Light Peach',family:'orange'},
+  {hex:'#FFDBB3',name:'Peach',family:'orange'},{hex:'#FFCE99',name:'Soft Orange',family:'orange'},
+  {hex:'#FFC180',name:'Light Orange',family:'orange'},{hex:'#FFB366',name:'Pastel Orange',family:'orange'},
+  {hex:'#FFA64D',name:'Tangerine',family:'orange'},{hex:'#FF9933',name:'Orange',family:'orange'},
+  {hex:'#FF8C1A',name:'Bright Orange',family:'orange'},{hex:'#E67A00',name:'Vivid Orange',family:'orange'},
+  {hex:'#CC6600',name:'Classic Orange',family:'orange'},{hex:'#B35900',name:'Deep Orange',family:'orange'},
+  {hex:'#994D00',name:'Burnt Orange',family:'orange'},{hex:'#804000',name:'Rust Orange',family:'orange'},
+  {hex:'#663300',name:'Sienna',family:'orange'},{hex:'#4D2600',name:'Brown Orange',family:'orange'},
+  {hex:'#FFF0DB',name:'Creamsicle',family:'orange'},{hex:'#FFE0BF',name:'Apricot',family:'orange'},
+  {hex:'#FFD0A3',name:'Light Apricot',family:'orange'},{hex:'#FFC087',name:'Peach Glow',family:'orange'},
+  {hex:'#FFB06B',name:'Warm Orange',family:'orange'},{hex:'#FFA04F',name:'Amber Light',family:'orange'},
+  {hex:'#FF8F33',name:'Amber',family:'orange'},{hex:'#F07F00',name:'Deep Amber',family:'orange'},
+  {hex:'#D66F00',name:'Rich Orange',family:'orange'},{hex:'#BC5F00',name:'Dark Amber',family:'orange'},
+  {hex:'#A34F00',name:'Bronze',family:'orange'},{hex:'#894000',name:'Dark Bronze',family:'orange'},
+  {hex:'#703000',name:'Raw Sienna',family:'orange'},{hex:'#572000',name:'Sepia',family:'orange'},
+  {hex:'#FFE0B2',name:'Orange Tint',family:'orange'},{hex:'#FFCC80',name:'Orange 100',family:'orange'},
+  {hex:'#FFB74D',name:'Orange 300',family:'orange'},{hex:'#FFA726',name:'Orange 400',family:'orange'},
+  {hex:'#FF9800',name:'Material Orange',family:'orange'},{hex:'#F57C00',name:'Orange 700',family:'orange'},
+  {hex:'#E65100',name:'Orange 900',family:'orange'},{hex:'#BF360C',name:'Orange Dark',family:'orange'},
+  {hex:'#FFAB91',name:'Deep Orange A100',family:'orange'},{hex:'#FF8A65',name:'Deep Orange A200',family:'orange'},
+  {hex:'#FF6E40',name:'Deep Orange A400',family:'orange'},{hex:'#DD2C00',name:'Deep Orange A700',family:'orange'},
+  {hex:'#FFF3E0',name:'Orange Mist',family:'orange'},
+  // Yellow (44)
+  {hex:'#FFFFF0',name:'Ivory',family:'yellow'},{hex:'#FFFFCC',name:'Light Yellow',family:'yellow'},
+  {hex:'#FFFF99',name:'Lemon',family:'yellow'},{hex:'#FFFF66',name:'Bright Lemon',family:'yellow'},
+  {hex:'#FFFF33',name:'Yellow Highlight',family:'yellow'},{hex:'#FFFF00',name:'Pure Yellow',family:'yellow'},
+  {hex:'#E6E600',name:'Yellow',family:'yellow'},{hex:'#CCCC00',name:'Gold Yellow',family:'yellow'},
+  {hex:'#B3B300',name:'Olive Yellow',family:'yellow'},{hex:'#999900',name:'Dark Yellow',family:'yellow'},
+  {hex:'#808000',name:'Olive',family:'yellow'},{hex:'#666600',name:'Dark Olive',family:'yellow'},
+  {hex:'#4D4D00',name:'Deep Olive',family:'yellow'},{hex:'#333300',name:'Very Dark Olive',family:'yellow'},
+  {hex:'#1A1A00',name:'Black Olive',family:'yellow'},{hex:'#FFFDE6',name:'Cream Yellow',family:'yellow'},
+  {hex:'#FFFACC',name:'Pastel Yellow',family:'yellow'},{hex:'#FFF7B3',name:'Soft Yellow',family:'yellow'},
+  {hex:'#FFF499',name:'Warm Yellow',family:'yellow'},{hex:'#FFF180',name:'Sun Yellow',family:'yellow'},
+  {hex:'#FFEE66',name:'Golden',family:'yellow'},{hex:'#FFEB33',name:'Bright Gold',family:'yellow'},
+  {hex:'#FFE600',name:'Vivid Yellow',family:'yellow'},{hex:'#E0CC00',name:'Rich Yellow',family:'yellow'},
+  {hex:'#C7B300',name:'Deep Gold',family:'yellow'},{hex:'#AD9900',name:'Dark Gold',family:'yellow'},
+  {hex:'#948000',name:'Antique Gold',family:'yellow'},{hex:'#7A6600',name:'Bronze Yellow',family:'yellow'},
+  {hex:'#614D00',name:'Khaki Dark',family:'yellow'},{hex:'#473300',name:'Deep Khaki',family:'yellow'},
+  {hex:'#FFF9C4',name:'Yellow Tint',family:'yellow'},{hex:'#FFF59D',name:'Yellow 100',family:'yellow'},
+  {hex:'#FFF176',name:'Yellow 300',family:'yellow'},{hex:'#FFEE58',name:'Yellow 400',family:'yellow'},
+  {hex:'#FFEB3B',name:'Material Yellow',family:'yellow'},{hex:'#FBC02D',name:'Yellow 700',family:'yellow'},
+  {hex:'#F9A825',name:'Yellow 800',family:'yellow'},{hex:'#F57F17',name:'Yellow 900',family:'yellow'},
+  {hex:'#FFFF8D',name:'Yellow A100',family:'yellow'},{hex:'#FFFF00',name:'Yellow A200',family:'yellow'},
+  {hex:'#FFD600',name:'Yellow A400',family:'yellow'},{hex:'#FFAB00',name:'Yellow A700',family:'yellow'},
+  {hex:'#FFFDE7',name:'Yellow Mist',family:'yellow'},
+  // Green (44)
+  {hex:'#F0FFF0',name:'Honeydew',family:'green'},{hex:'#D6FFD6',name:'Mint Cream',family:'green'},
+  {hex:'#BCFFBC',name:'Light Mint',family:'green'},{hex:'#A3FFA3',name:'Pastel Green',family:'green'},
+  {hex:'#89FF89',name:'Mint Green',family:'green'},{hex:'#70FF70',name:'Light Green',family:'green'},
+  {hex:'#57FF57',name:'Bright Green',family:'green'},{hex:'#3DFF3D',name:'Neon Green',family:'green'},
+  {hex:'#24FF24',name:'Vivid Green',family:'green'},{hex:'#0AE60A',name:'Pure Green',family:'green'},
+  {hex:'#00CC00',name:'Classic Green',family:'green'},{hex:'#00B300',name:'Forest Green',family:'green'},
+  {hex:'#009900',name:'Deep Green',family:'green'},{hex:'#008000',name:'Green',family:'green'},
+  {hex:'#006600',name:'Dark Green',family:'green'},{hex:'#004D00',name:'Very Dark Green',family:'green'},
+  {hex:'#E8F5E9',name:'Green Tint',family:'green'},{hex:'#C8E6C9',name:'Light Green Tint',family:'green'},
+  {hex:'#A5D6A7',name:'Soft Green',family:'green'},{hex:'#81C784',name:'Medium Green',family:'green'},
+  {hex:'#66BB6A',name:'Green Accent',family:'green'},{hex:'#4CAF50',name:'Material Green',family:'green'},
+  {hex:'#43A047',name:'Green 700',family:'green'},{hex:'#388E3C',name:'Green 800',family:'green'},
+  {hex:'#2E7D32',name:'Green 900',family:'green'},{hex:'#1B5E20',name:'Green Dark',family:'green'},
+  {hex:'#0D3B0D',name:'Deep Forest',family:'green'},{hex:'#0A2E0A',name:'Pine',family:'green'},
+  {hex:'#072007',name:'Dark Pine',family:'green'},{hex:'#041304',name:'Black Green',family:'green'},
+  {hex:'#B9F6CA',name:'Green A100',family:'green'},{hex:'#69F0AE',name:'Green A200',family:'green'},
+  {hex:'#00E676',name:'Green A400',family:'green'},{hex:'#00C853',name:'Green A700',family:'green'},
+  {hex:'#C8E6C9',name:'Green Pale',family:'green'},{hex:'#A5D6A7',name:'Green Soft',family:'green'},
+  {hex:'#81C784',name:'Green Light',family:'green'},{hex:'#4DB6AC',name:'Teal Green',family:'green'},
+  {hex:'#26A69A',name:'Teal',family:'green'},{hex:'#00897B',name:'Teal Dark',family:'green'},
+  {hex:'#E0F2F1',name:'Teal Mist',family:'green'},
+  // Blue (44)
+  {hex:'#F0F8FF',name:'Alice Blue',family:'blue'},{hex:'#D6EAFF',name:'Light Blue',family:'blue'},
+  {hex:'#BCDCFF',name:'Powder Blue',family:'blue'},{hex:'#A3CEFF',name:'Soft Blue',family:'blue'},
+  {hex:'#89C0FF',name:'Sky Blue',family:'blue'},{hex:'#70B3FF',name:'Light Sky',family:'blue'},
+  {hex:'#57A6FF',name:'Cornflower',family:'blue'},{hex:'#3D99FF',name:'Bright Blue',family:'blue'},
+  {hex:'#248CFF',name:'Vivid Blue',family:'blue'},{hex:'#0A7AFF',name:'Pure Blue',family:'blue'},
+  {hex:'#0066FF',name:'Classic Blue',family:'blue'},{hex:'#0052CC',name:'Royal Blue',family:'blue'},
+  {hex:'#003D99',name:'Deep Blue',family:'blue'},{hex:'#002966',name:'Navy Blue',family:'blue'},
+  {hex:'#001A4D',name:'Dark Navy',family:'blue'},{hex:'#000D33',name:'Midnight',family:'blue'},
+  {hex:'#E3F2FD',name:'Blue Tint',family:'blue'},{hex:'#BBDEFB',name:'Blue 50',family:'blue'},
+  {hex:'#90CAF9',name:'Blue 200',family:'blue'},{hex:'#64B5F6',name:'Blue 300',family:'blue'},
+  {hex:'#42A5F5',name:'Blue 400',family:'blue'},{hex:'#2196F3',name:'Material Blue',family:'blue'},
+  {hex:'#1E88E5',name:'Blue 700',family:'blue'},{hex:'#1565C0',name:'Blue 800',family:'blue'},
+  {hex:'#0D47A1',name:'Blue 900',family:'blue'},{hex:'#0A3570',name:'Deep Royal',family:'blue'},
+  {hex:'#07254D',name:'Dark Royal',family:'blue'},{hex:'#04162A',name:'Black Blue',family:'blue'},
+  {hex:'#020D1A',name:'Abyss',family:'blue'},{hex:'#82B1FF',name:'Blue A100',family:'blue'},
+  {hex:'#448AFF',name:'Blue A200',family:'blue'},{hex:'#2979FF',name:'Blue A400',family:'blue'},
+  {hex:'#2962FF',name:'Blue A700',family:'blue'},{hex:'#B3E5FC',name:'Light Blue Tint',family:'blue'},
+  {hex:'#81D4FA',name:'Light Blue 200',family:'blue'},{hex:'#4FC3F7',name:'Light Blue 300',family:'blue'},
+  {hex:'#29B6F6',name:'Light Blue 400',family:'blue'},{hex:'#03A9F4',name:'Material Light Blue',family:'blue'},
+  {hex:'#0288D1',name:'Light Blue 700',family:'blue'},{hex:'#01579B',name:'Light Blue 900',family:'blue'},
+  {hex:'#E1F5FE',name:'Light Blue Mist',family:'blue'},
+  // Purple (44)
+  {hex:'#F8F0FF',name:'Lavender Mist',family:'purple'},{hex:'#EDD6FF',name:'Light Lavender',family:'purple'},
+  {hex:'#E2BCFF',name:'Lavender',family:'purple'},{hex:'#D7A3FF',name:'Soft Purple',family:'purple'},
+  {hex:'#CC89FF',name:'Medium Lavender',family:'purple'},{hex:'#C170FF',name:'Bright Lavender',family:'purple'},
+  {hex:'#B656FF',name:'Violet',family:'purple'},{hex:'#AB3DFF',name:'Bright Violet',family:'purple'},
+  {hex:'#A024FF',name:'Pure Violet',family:'purple'},{hex:'#8F0AFF',name:'Vivid Purple',family:'purple'},
+  {hex:'#7C00FF',name:'Classic Purple',family:'purple'},{hex:'#6A00CC',name:'Deep Purple',family:'purple'},
+  {hex:'#580099',name:'Rich Purple',family:'purple'},{hex:'#460066',name:'Dark Purple',family:'purple'},
+  {hex:'#34004D',name:'Very Dark Purple',family:'purple'},{hex:'#220033',name:'Black Purple',family:'purple'},
+  {hex:'#F3E5F5',name:'Purple Tint',family:'purple'},{hex:'#E1BEE7',name:'Purple 50',family:'purple'},
+  {hex:'#CE93D8',name:'Purple 200',family:'purple'},{hex:'#BA68C8',name:'Purple 300',family:'purple'},
+  {hex:'#AB47BC',name:'Purple 400',family:'purple'},{hex:'#9C27B0',name:'Material Purple',family:'purple'},
+  {hex:'#8E24AA',name:'Purple 700',family:'purple'},{hex:'#7B1FA2',name:'Purple 800',family:'purple'},
+  {hex:'#6A1B9A',name:'Purple 900',family:'purple'},{hex:'#4A148C',name:'Purple Dark',family:'purple'},
+  {hex:'#380D6B',name:'Deep Violet',family:'purple'},{hex:'#26074A',name:'Dark Violet',family:'purple'},
+  {hex:'#18032E',name:'Black Violet',family:'purple'},{hex:'#EA80FC',name:'Purple A100',family:'purple'},
+  {hex:'#D500F9',name:'Purple A400',family:'purple'},{hex:'#AA00FF',name:'Purple A700',family:'purple'},
+  {hex:'#B39DDB',name:'Deep Purple 200',family:'purple'},{hex:'#9575CD',name:'Deep Purple 300',family:'purple'},
+  {hex:'#7E57C2',name:'Deep Purple 400',family:'purple'},{hex:'#673AB7',name:'Material Deep Purple',family:'purple'},
+  {hex:'#5E35B1',name:'Deep Purple 700',family:'purple'},{hex:'#512DA8',name:'Deep Purple 800',family:'purple'},
+  {hex:'#4527A0',name:'Deep Purple 900',family:'purple'},{hex:'#311B92',name:'Deep Purple Dark',family:'purple'},
+  {hex:'#EDE7F6',name:'Deep Purple Mist',family:'purple'},
+  // Pink (44)
+  {hex:'#FFF0F6',name:'Pink Mist',family:'pink'},{hex:'#FFD6EB',name:'Light Pink',family:'pink'},
+  {hex:'#FFBCE0',name:'Pastel Pink',family:'pink'},{hex:'#FFA3D5',name:'Soft Pink',family:'pink'},
+  {hex:'#FF89CA',name:'Medium Pink',family:'pink'},{hex:'#FF70BF',name:'Rose Pink',family:'pink'},
+  {hex:'#FF56B4',name:'Hot Pink',family:'pink'},{hex:'#FF3DA9',name:'Bright Pink',family:'pink'},
+  {hex:'#FF249E',name:'Vivid Pink',family:'pink'},{hex:'#E60A8F',name:'Pure Pink',family:'pink'},
+  {hex:'#CC007D',name:'Classic Pink',family:'pink'},{hex:'#B3006E',name:'Deep Pink',family:'pink'},
+  {hex:'#99005F',name:'Dark Pink',family:'pink'},{hex:'#800050',name:'Very Dark Pink',family:'pink'},
+  {hex:'#660040',name:'Maroon Pink',family:'pink'},{hex:'#4D0030',name:'Black Pink',family:'pink'},
+  {hex:'#FCE4EC',name:'Pink Tint',family:'pink'},{hex:'#F8BBD0',name:'Pink 100',family:'pink'},
+  {hex:'#F48FB1',name:'Pink 200',family:'pink'},{hex:'#F06292',name:'Pink 300',family:'pink'},
+  {hex:'#EC407A',name:'Pink 400',family:'pink'},{hex:'#E91E63',name:'Material Pink',family:'pink'},
+  {hex:'#D81B60',name:'Pink 700',family:'pink'},{hex:'#C2185B',name:'Pink 800',family:'pink'},
+  {hex:'#AD1457',name:'Pink 900',family:'pink'},{hex:'#880E4F',name:'Pink Dark',family:'pink'},
+  {hex:'#6A0B3D',name:'Deep Rose',family:'pink'},{hex:'#4D082C',name:'Dark Rose',family:'pink'},
+  {hex:'#30051B',name:'Black Rose',family:'pink'},{hex:'#FF80AB',name:'Pink A100',family:'pink'},
+  {hex:'#FF4081',name:'Pink A200',family:'pink'},{hex:'#F50057',name:'Pink A400',family:'pink'},
+  {hex:'#C51162',name:'Pink A700',family:'pink'},{hex:'#F8BBD0',name:'Light Pink 100',family:'pink'},
+  {hex:'#F48FB1',name:'Light Pink 200',family:'pink'},{hex:'#F06292',name:'Light Pink 300',family:'pink'},
+  {hex:'#EC407A',name:'Light Pink 400',family:'pink'},{hex:'#E91E63',name:'Light Pink Main',family:'pink'},
+  {hex:'#D81B60',name:'Light Pink 700',family:'pink'},{hex:'#AD1457',name:'Light Pink 900',family:'pink'},
+  {hex:'#880E4F',name:'Light Pink Dark',family:'pink'},{hex:'#FFF0F5',name:'Lavender Blush',family:'pink'},
+  // Brown (42)
+  {hex:'#FAF0E6',name:'Linen',family:'brown'},{hex:'#F0DCC8',name:'Wheat',family:'brown'},
+  {hex:'#E6C8AA',name:'Tan',family:'brown'},{hex:'#D4B496',name:'Light Brown',family:'brown'},
+  {hex:'#C2A082',name:'Soft Brown',family:'brown'},{hex:'#B08C6E',name:'Medium Brown',family:'brown'},
+  {hex:'#9E785A',name:'Brown',family:'brown'},{hex:'#8C6446',name:'Rich Brown',family:'brown'},
+  {hex:'#7A5032',name:'Dark Brown',family:'brown'},{hex:'#683C1E',name:'Deep Brown',family:'brown'},
+  {hex:'#56280A',name:'Very Dark Brown',family:'brown'},{hex:'#441E00',name:'Chocolate',family:'brown'},
+  {hex:'#361800',name:'Dark Chocolate',family:'brown'},{hex:'#281200',name:'Espresso',family:'brown'},
+  {hex:'#1A0C00',name:'Black Brown',family:'brown'},{hex:'#0D0600',name:'Near Black Brown',family:'brown'},
+  {hex:'#EFEBE9',name:'Brown Tint',family:'brown'},{hex:'#D7CCC8',name:'Brown 50',family:'brown'},
+  {hex:'#BCAAA4',name:'Brown 100',family:'brown'},{hex:'#A1887F',name:'Brown 300',family:'brown'},
+  {hex:'#8D6E63',name:'Material Brown',family:'brown'},{hex:'#795548',name:'Brown 500',family:'brown'},
+  {hex:'#6D4C41',name:'Brown 600',family:'brown'},{hex:'#5D4037',name:'Brown 700',family:'brown'},
+  {hex:'#4E342E',name:'Brown 800',family:'brown'},{hex:'#3E2723',name:'Brown 900',family:'brown'},
+  {hex:'#2E1B11',name:'Deep Espresso',family:'brown'},{hex:'#1F100A',name:'Dark Espresso',family:'brown'},
+  {hex:'#140A06',name:'Black Espresso',family:'brown'},{hex:'#BCAAA4',name:'Brown Light',family:'brown'},
+  {hex:'#A1887F',name:'Brown Soft',family:'brown'},{hex:'#8D6E63',name:'Brown Medium',family:'brown'},
+  {hex:'#795548',name:'Brown Classic',family:'brown'},{hex:'#6D4C41',name:'Brown Deep',family:'brown'},
+  {hex:'#C4956A',name:'Caramel',family:'brown'},{hex:'#D2A679',name:'Sand',family:'brown'},
+  {hex:'#B8860B',name:'Dark Goldenrod',family:'brown'},{hex:'#A0522D',name:'Sienna',family:'brown'},
+  {hex:'#8B4513',name:'Saddle Brown',family:'brown'},{hex:'#654321',name:'Dark Tan',family:'brown'}
+];
+
+const TEMPLATES = [
+  { name: 'Sunset', emoji: '\u{1F305}', colors: ['#FF6B6B','#FF8E53','#FFC371','#FFD93D','#FF6348','#C44569'] },
+  { name: 'Ocean', emoji: '\u{1F30A}', colors: ['#0ABDE3','#48DBFB','#54A0FF','#2E86DE','#0984E3','#0652DD'] },
+  { name: 'Forest', emoji: '\u{1F332}', colors: ['#2D5016','#4A7C23','#6BCB77','#A8E6CF','#BADC58','#6AB04C'] },
+  { name: 'Midnight', emoji: '\u{1F30C}', colors: ['#0C0032','#190061','#240090','#3500D3','#282C34','#1A1A2E'] },
+  { name: 'Coffee', emoji: '\u{2615}', colors: ['#3E2723','#4E342E','#6D4C41','#8D6E63','#A1887F','#D7CCC8'] },
+  { name: 'Candy', emoji: '\u{1F36C}', colors: ['#FF6F91','#FF9671','#FFC75F','#F9F871','#D65DB1','#845EC2'] },
+  { name: 'Sakura', emoji: '\u{1F338}', colors: ['#FFB7C5','#FF8FAB','#FF758F','#FF4D6D','#C9184A','#FFCCD5'] },
+  { name: 'Desert', emoji: '\u{1F3DC}', colors: ['#E6B89C','#D4A574','#C4956A','#B8860B','#DAA520','#F5DEB3'] },
+  { name: 'Nature', emoji: '\u{1F33F}', colors: ['#2D5016','#55A630','#80B918','#AACC00','#BFD200','#DDDF00'] },
+  { name: 'Minimal', emoji: '\u{1F90D}', colors: ['#FFFFFF','#F8F9FA','#DEE2E6','#ADB5BD','#6C757D','#343A40'] },
+  { name: 'Luxury', emoji: '\u{1F3AD}', colors: ['#0D0D0D','#1A1A2E','#16213E','#0F3460','#C9A959','#E8D5B7'] },
+  { name: 'Cyberpunk', emoji: '\u{1F4BB}', colors: ['#0D0221','#0A0A23','#FF00FF','#00FFFF','#FF0080','#8000FF'] },
+  { name: 'Retro', emoji: '\u{1F3A8}', colors: ['#F38181','#FCE38A','#EAFFD0','#95E1D3','#AA96DA','#FCBAD3'] },
+  { name: 'Vibrant', emoji: '\u{1F308}', colors: ['#FF0000','#FF8800','#FFFF00','#00FF00','#0088FF','#8800FF'] },
+  { name: 'Arctic', emoji: '\u{1F9CA}', colors: ['#E8F4FD','#D1ECFA','#B8E3F7','#8DD3F0','#62C3E9','#48B5E0'] }
+];
+
+<!-- APP LOGIC -->
+
+let palette = [];
+let activeFamily = 'all';
+let dragSrcIndex = null;
+
+/* Color utilities */
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if (hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+  const n = parseInt(hex, 16);
+  return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function getRgbStr(hex) { const c = hexToRgb(hex); return `rgb(${c.r}, ${c.g}, ${c.b})`; }
+function getHslStr(hex) { const c = hexToRgb(hex); const h = rgbToHsl(c.r, c.g, c.b); return `hsl(${h.h}, ${h.s}%, ${h.l}%)`; }
+
+function getContrastColor(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.55 ? '#000000' : '#FFFFFF';
+}
+
+function randomColor() {
+  return COLORS[Math.floor(Math.random() * COLORS.length)].hex;
+}
+
+/* Toast */
+function toast(msg, icon) {
+  const container = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = (icon || '') + ' ' + msg;
+  container.appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 300); }, 2500);
+}
+
+/* Clipboard */
+function copyText(text, label) {
+  navigator.clipboard.writeText(text).then(() => {
+    toast(label + ' copied!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    toast(label + ' copied!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+  });
+}
+
+/* Scroll helper */
+function scrollToEl(sel) {
+  const el = document.querySelector(sel);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* Palette */
+function generatePalette() {
+  const newPalette = palette.map(c => c.locked ? { ...c } : { hex: randomColor(), locked: false });
+  if (newPalette.length === 0) {
+    for (let i = 0; i < 6; i++) newPalette.push({ hex: randomColor(), locked: false });
+  }
+  palette = newPalette;
+  renderPalette(true);
+  updateExports();
+}
+
+function addColor() {
+  palette.push({ hex: randomColor(), locked: false });
+  renderPalette();
+  updateExports();
+}
+
+function removeColor(idx) {
+  palette.splice(idx, 1);
+  renderPalette();
+  updateExports();
+}
+
+function toggleLock(idx) {
+  palette[idx].locked = !palette[idx].locked;
+  renderPalette();
+}
+
+function updateColorHex(idx, hex) {
+  palette[idx].hex = hex;
+  renderPalette();
+  updateExports();
+}
+
+function renderPalette(animate) {
+  const grid = document.getElementById('paletteGrid');
+  let html = '';
+  palette.forEach((c, i) => {
+    const rgb = getRgbStr(c.hex);
+    const hsl = getHslStr(c.hex);
+    const contrast = getContrastColor(c.hex);
+    const animClass = animate ? ' shuffle-anim' : '';
+    html += `
+    <div class="palette-card${animClass}" draggable="true" data-idx="${i}"
+         ondragstart="onDragStart(event,${i})" ondragover="onDragOver(event)" ondragenter="onDragEnter(event)"
+         ondragleave="onDragLeave(event)" ondrop="onDrop(event,${i})" ondragend="onDragEnd(event)">
+      <div class="color-preview" style="background-color:${c.hex}">
+        <button class="lock-btn ${c.locked ? 'locked' : ''}" onclick="toggleLock(${i})" aria-label="${c.locked ? 'Unlock' : 'Lock'} color" title="${c.locked ? 'Unlock' : 'Lock'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="${c.locked ? contrast : 'none'}" stroke="${contrast}" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </button>
+        <button class="remove-btn" onclick="removeColor(${i})" aria-label="Remove color" title="Remove">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${contrast}" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="color-info">
+        <div class="color-hex">${c.hex.toUpperCase()}</div>
+        <div class="color-rgb">${rgb}</div>
+        <div class="color-hsl">${hsl}</div>
+        <div class="color-actions">
+          <button class="btn-icon" onclick="copyText('${c.hex.toUpperCase()}','HEX')" title="Copy HEX" aria-label="Copy HEX">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button class="btn-icon" onclick="copyText('${rgb}','RGB')" title="Copy RGB" aria-label="Copy RGB">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <button class="btn-icon" onclick="copyText('${hsl}','HSL')" title="Copy HSL" aria-label="Copy HSL">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <div class="picker-wrap" title="Pick color" style="background:${c.hex}">
+            <input type="color" value="${c.hex}" onchange="updateColorHex(${i},this.value)" aria-label="Color picker">
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += `<div class="add-card" onclick="addColor()" role="button" aria-label="Add new color" tabindex="0">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    <span style="font-size:.8rem;font-weight:500">Add Color</span>
+  </div>`;
+  grid.innerHTML = html;
+}
+
+/* Drag and drop */
+function onDragStart(e, idx) {
+  dragSrcIndex = idx;
+  e.dataTransfer.effectAllowed = 'move';
+  e.target.closest('.palette-card').classList.add('dragging');
+}
+function onDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+function onDragEnter(e) { e.preventDefault(); e.target.closest('.palette-card')?.classList.add('drag-over'); }
+function onDragLeave(e) { e.target.closest('.palette-card')?.classList.remove('drag-over'); }
+function onDrop(e, idx) {
+  e.preventDefault();
+  e.target.closest('.palette-card')?.classList.remove('drag-over');
+  if (dragSrcIndex !== null && dragSrcIndex !== idx) {
+    const item = palette.splice(dragSrcIndex, 1)[0];
+    palette.splice(idx, 0, item);
+    renderPalette();
+    updateExports();
+  }
+}
+function onDragEnd(e) {
+  dragSrcIndex = null;
+  document.querySelectorAll('.palette-card').forEach(c => c.classList.remove('dragging', 'drag-over'));
+}
+
+/* Color Library */
+function renderFamilyFilters() {
+  const container = document.getElementById('familyFilters');
+  let html = `<button class="family-btn ${activeFamily === 'all' ? 'active' : ''}" onclick="filterFamily('all')">All</button>`;
+  for (const [key, val] of Object.entries(COLOR_FAMILIES)) {
+    html += `<button class="family-btn ${activeFamily === key ? 'active' : ''}" onclick="filterFamily('${key}')">
+      <span class="family-dot" style="background:${val.dot}"></span>${val.label}
+    </button>`;
+  }
+  container.innerHTML = html;
+}
+
+function filterFamily(fam) {
+  activeFamily = fam;
+  renderFamilyFilters();
+  renderColorGrid();
+}
+
+function renderColorGrid() {
+  const search = document.getElementById('colorSearch').value.toLowerCase().trim();
+  const grid = document.getElementById('colorGrid');
+  const empty = document.getElementById('libEmpty');
+  let filtered = COLORS;
+  if (activeFamily !== 'all') filtered = filtered.filter(c => c.family === activeFamily);
+  if (search) filtered = filtered.filter(c => c.name.toLowerCase().includes(search) || c.hex.toLowerCase().includes(search) || c.family.toLowerCase().includes(search));
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  let html = '';
+  filtered.forEach(c => {
+    html += `<div class="color-swatch" style="background:${c.hex}" onclick="addColorToPalette('${c.hex}')" title="${c.name}" tabindex="0" role="button" aria-label="${c.name} ${c.hex}">
+      <span class="swatch-tip">${c.name}<br>${c.hex.toUpperCase()}</span>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function addColorToPalette(hex) {
+  palette.push({ hex, locked: false });
+  renderPalette();
+  updateExports();
+  toast('Color added to palette', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+  scrollToEl('#generator');
+}
+
+document.getElementById('colorSearch').addEventListener('input', renderColorGrid);
+
+/* Templates */
+function renderTemplates() {
+  const grid = document.getElementById('templatesGrid');
+  let html = '';
+  TEMPLATES.forEach(t => {
+    html += `<div class="template-card">
+      <div class="template-preview">${t.colors.map(c => `<div style="background:${c}"></div>`).join('')}</div>
+      <div class="template-info">
+        <span class="template-name">${t.emoji} ${t.name}</span>
+        <button class="btn btn-sm btn-primary" onclick="useTemplate(${JSON.stringify(t.colors).replace(/"/g, '&quot;')})">Use</button>
+      </div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function useTemplate(colors) {
+  palette = colors.map(hex => ({ hex, locked: false }));
+  renderPalette(true);
+  updateExports();
+  scrollToEl('#generator');
+  toast('Template loaded!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+}
+
+<!-- FAVORITES -->
+
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('huefy_favorites') || '[]'); } catch { return []; }
+}
+
+function saveFavorites(favs) {
+  localStorage.setItem('huefy_favorites', JSON.stringify(favs));
+}
+
+function saveFavorite() {
+  if (palette.length === 0) { toast('Generate a palette first', ''); return; }
+  const favs = getFavorites();
+  favs.unshift({
+    id: Date.now(),
+    colors: palette.map(c => c.hex),
+    date: new Date().toLocaleDateString()
+  });
+  if (favs.length > 50) favs.length = 50;
+  saveFavorites(favs);
+  renderFavorites();
+  toast('Palette saved!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>');
+}
+
+function removeFavorite(id) {
+  let favs = getFavorites().filter(f => f.id !== id);
+  saveFavorites(favs);
+  renderFavorites();
+  toast('Favorite removed', '');
+}
+
+function loadFavorite(id) {
+  const fav = getFavorites().find(f => f.id === id);
+  if (!fav) return;
+  palette = fav.colors.map(hex => ({ hex, locked: false }));
+  renderPalette(true);
+  updateExports();
+  scrollToEl('#generator');
+  toast('Favorite loaded!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+}
+
+function renderFavorites() {
+  const favs = getFavorites();
+  const container = document.getElementById('favContent');
+  if (favs.length === 0) {
+    container.innerHTML = `<div class="fav-empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--fg3)" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 12px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      <p>No saved palettes yet.</p>
+      <p style="font-size:.8rem;margin-top:4px">Generate a palette and click Save to store it here.</p>
+    </div>`;
+    return;
+  }
+  let html = '<div class="fav-grid">';
+  favs.forEach(f => {
+    html += `<div class="fav-card">
+      <div class="fav-preview">${f.colors.map(c => `<div style="background:${c}"></div>`).join('')}</div>
+      <div class="fav-info">
+        <div>
+          <div class="fav-meta">Saved ${f.date}</div>
+          <div class="fav-hexes">${f.colors.map(c => c.toUpperCase()).join(' \u00B7 ')}</div>
+        </div>
+        <div class="fav-actions">
+          <button class="btn btn-sm btn-primary" onclick="loadFavorite(${f.id})">Load</button>
+          <button class="btn-icon" onclick="removeFavorite(${f.id})" title="Remove" aria-label="Remove favorite">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+<!-- SHARING -->
+
+function getShareUrl() {
+  const hexes = palette.map(c => c.hex.replace('#','')).join('-');
+  const base = window.location.origin + window.location.pathname;
+  return hexes ? base + '?palette=' + hexes : base;
+}
+
+function openShareModal() {
+  if (palette.length === 0) { toast('Generate a palette first', ''); return; }
+  document.getElementById('shareUrl').value = getShareUrl();
+  document.getElementById('shareModal').classList.add('active');
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('active');
+}
+
+function copyShareUrl() {
+  copyText(document.getElementById('shareUrl').value, 'Link');
+}
+
+document.getElementById('shareModal').addEventListener('click', function(e) {
+  if (e.target === this) closeShareModal();
+});
+
+function loadFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const pal = params.get('palette');
+  if (pal) {
+    const hexes = pal.split('-').map(h => '#' + h);
+    palette = hexes.map(hex => ({ hex, locked: false }));
+    renderPalette(true);
+    updateExports();
+    toast('Palette loaded from URL!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+  }
+}
+
+<!-- EXPORTS -->
+
+function getCSSExport() {
+  if (palette.length === 0) return ':root {\n  /* Generate a palette first */\n}';
+  return ':root {\n' + palette.map((c, i) => `  --color-${i + 1}: ${c.hex};`).join('\n') + '\n}';
+}
+
+function getJSONExport() {
+  return JSON.stringify({ palette: palette.map(c => c.hex) }, null, 2);
+}
+
+function getTXTExport() {
+  if (palette.length === 0) return 'No palette generated.';
+  return palette.map((c, i) => {
+    const rgb = getRgbStr(c.hex);
+    const hsl = getHslStr(c.hex);
+    return `Color ${i + 1}: ${c.hex.toUpperCase()} | ${rgb} | ${hsl}`;
+  }).join('\n');
+}
+
+function downloadFile(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function exportPNG() {
+  if (palette.length === 0) { toast('Generate a palette first', ''); return; }
+  const canvas = document.createElement('canvas');
+  const w = Math.max(600, palette.length * 100);
+  const h = 400;
+  canvas.width = w * 2; canvas.height = h * 2;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+  /* Background */
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  ctx.fillStyle = isDark ? '#0B0F1A' : '#FFFFFF';
+  ctx.fillRect(0, 0, w, h);
+  /* Title */
+  ctx.fillStyle = isDark ? '#F1F5F9' : '#0F172A';
+  ctx.font = 'bold 20px Inter, sans-serif';
+  ctx.fillText('Huefy Palette', 24, 40);
+  ctx.font = '12px Inter, sans-serif';
+  ctx.fillStyle = isDark ? '#94A3B8' : '#475569';
+  ctx.fillText(new Date().toLocaleDateString(), 24, 60);
+  /* Colors */
+  const cw = (w - 48) / palette.length;
+  const ch = 260;
+  const cy = 85;
+  palette.forEach((c, i) => {
+    const x = 24 + i * cw;
+    ctx.fillStyle = c.hex;
+    const r = 8;
+    ctx.beginPath();
+    ctx.moveTo(x + r, cy);
+    ctx.lineTo(x + cw - 2 + r, cy);
+    ctx.quadraticCurveTo(x + cw - 2, cy, x + cw - 2, cy + r);
+    ctx.lineTo(x + cw - 2, cy + ch - r);
+    ctx.quadraticCurveTo(x + cw - 2, cy + ch, x + cw - 2 - r, cy + ch);
+    ctx.lineTo(x + r, cy + ch);
+    ctx.quadraticCurveTo(x, cy + ch, x, cy + ch - r);
+    ctx.lineTo(x, cy + r);
+    ctx.quadraticCurveTo(x, cy, x + r, cy);
+    ctx.fill();
+    /* Hex label */
+    ctx.fillStyle = isDark ? '#F1F5F9' : '#0F172A';
+    ctx.font = 'bold 11px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(c.hex.toUpperCase(), x + cw / 2 - 1, cy + ch + 24);
+    ctx.textAlign = 'start';
+  });
+  /* Watermark */
+  ctx.fillStyle = isDark ? '#334155' : '#CBD5E1';
+  ctx.font = '10px Inter, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.fillText('huefy.app', w - 24, h - 16);
+  ctx.textAlign = 'start';
+  canvas.toBlob(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'huefy-palette.png';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    toast('PNG downloaded!', '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>');
+  });
+}
+
+function updateExports() {
+  const grid = document.getElementById('exportGrid');
+  grid.innerHTML = `
+  <div class="export-card">
+    <h3>PNG Image</h3>
+    <p>Download your palette as a high-resolution image.</p>
+    <div class="export-btns">
+      <button class="btn btn-primary btn-sm" onclick="exportPNG()">Download PNG</button>
+    </div>
+  </div>
+  <div class="export-card">
+    <h3>CSS Variables</h3>
+    <p>Copy or download CSS custom properties.</p>
+    <div class="export-output">${escapeHtml(getCSSExport())}</div>
+    <div class="export-btns">
+      <button class="btn btn-primary btn-sm" onclick="copyText(getCSSExport(),'CSS')">Copy</button>
+      <button class="btn btn-secondary btn-sm" onclick="downloadFile(getCSSExport(),'huefy-palette.css','text/css')">Download</button>
+    </div>
+  </div>
+  <div class="export-card">
+    <h3>JSON</h3>
+    <p>Copy or download palette as JSON array.</p>
+    <div class="export-output">${escapeHtml(getJSONExport())}</div>
+    <div class="export-btns">
+      <button class="btn btn-primary btn-sm" onclick="copyText(getJSONExport(),'JSON')">Copy</button>
+      <button class="btn btn-secondary btn-sm" onclick="downloadFile(getJSONExport(),'huefy-palette.json','application/json')">Download</button>
+    </div>
+  </div>
+  <div class="export-card">
+    <h3>Text File</h3>
+    <p>Download a readable text file with all color values.</p>
+    <div class="export-output">${escapeHtml(getTXTExport())}</div>
+    <div class="export-btns">
+      <button class="btn btn-primary btn-sm" onclick="copyText(getTXTExport(),'Text')">Copy</button>
+      <button class="btn btn-secondary btn-sm" onclick="downloadFile(getTXTExport(),'huefy-palette.txt','text/plain')">Download</button>
+    </div>
+  </div>`;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+<!-- THEME -->
+
+function initTheme() {
+  const saved = localStorage.getItem('huefy_theme');
+  if (saved) {
+    setTheme(saved);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setTheme('dark');
+  } else {
+    setTheme('light');
+  }
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('huefy_theme', theme);
+  const sun = document.getElementById('sunIcon');
+  const moon = document.getElementById('moonIcon');
+  if (theme === 'dark') {
+    sun.style.display = 'none'; moon.style.display = 'block';
+  } else {
+    sun.style.display = 'block'; moon.style.display = 'none';
+  }
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
+  updateExports();
+});
+
+<!-- NAVIGATION -->
+
+/* Scroll spy */
+const sections = ['generator','library','templates','favorites','export'];
+const navLinks = document.querySelectorAll('.nav a');
+const mobileLinks = document.querySelectorAll('.mobile-nav a');
+
+function updateActiveNav() {
+  let current = '';
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) current = id;
+  }
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+  mobileLinks.forEach(a => {
+    a.classList.toggle('active', a.dataset.section === current);
+  });
+}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
+
+<!-- KEYBOARD SHORTCUTS -->
+
+document.addEventListener('keydown', (e) => {
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (e.code === 'Space') {
+    e.preventDefault();
+    generatePalette();
+  } else if (e.key === 's' || e.key === 'S') {
+    e.preventDefault();
+    saveFavorite();
+  } else if (e.key === 'l' || e.key === 'L') {
+    e.preventDefault();
+    const allLocked = palette.every(c => c.locked);
+    palette.forEach(c => c.locked = !allLocked);
+    renderPalette();
+    toast(allLocked ? 'All unlocked' : 'All locked', '');
+  } else if (e.key === 'd' || e.key === 'D') {
+    e.preventDefault();
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+    updateExports();
+  } else if (e.key === 'Escape') {
+    closeShareModal();
+  }
+});
+
+<!-- MOBILE TOGGLE (scroll to section) -->
+
+document.getElementById('mobileToggle').addEventListener('click', () => {
+  /* On mobile, just scroll to generator */
+  scrollToEl('#generator');
+});
+
+<!-- INIT -->
+
+function init() {
+  initTheme();
+  loadFromUrl();
+  if (palette.length === 0) generatePalette();
+  renderFamilyFilters();
+  renderColorGrid();
+  renderTemplates();
+  renderFavorites();
+  updateExports();
+  updateActiveNav();
+}
+
+init();
+</script>
+</body>
+</html>
