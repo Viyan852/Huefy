@@ -1,0 +1,2532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huefy Timeline — Color Through Time</title>
+<meta name="description" content="Explore the colors that defined eras from ancient history to an imagined future, with Huefy.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%2248%22 y2=%2248%22%3E%3Cstop offset=%220%25%22 stop-color=%22%237C5CFF%22/%3E%3Cstop offset=%2255%25%22 stop-color=%22%23FF6B9D%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23FFD166%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%2224%22 cy=%2224%22 r=%2222%22 fill=%22url(%23g)%22/%3E%3Cpath d=%22M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z%22 fill=%22white%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+/* =========================================================
+   HUEFY TIMELINE — WARM MINIMAL DESIGN SYSTEM
+   ========================================================= */
+
+:root{
+  --bg:#F5F0E8;
+  --bg-elev:#FBF9F5;
+  --bg-soft:#EDE7DC;
+  --bg-hover:#E6DED2;
+
+  --text:#26231F;
+  --text-soft:#686158;
+  --text-faint:#9B9388;
+
+  --border:rgba(55,48,40,.10);
+  --border-strong:rgba(55,48,40,.17);
+
+  --brand-1:#C8754A;
+  --brand-2:#B55C43;
+  --brand-3:#D99A72;
+  --brand-4:#E4B98C;
+
+  --grad-brand:linear-gradient(
+    135deg,
+    #C8754A 0%,
+    #B55C43 58%,
+    #D99A72 100%
+  );
+
+  --success:#6E9B73;
+  --danger:#B9685F;
+
+  --shadow-sm:
+    0 1px 2px rgba(53,45,36,.035),
+    0 2px 5px rgba(53,45,36,.035);
+
+  --shadow-md:
+    0 5px 14px rgba(53,45,36,.055),
+    0 12px 28px rgba(53,45,36,.045);
+
+  --shadow-lg:
+    0 14px 34px rgba(53,45,36,.08),
+    0 28px 60px rgba(53,45,36,.055);
+
+  --radius-sm:12px;
+  --radius-md:20px;
+  --radius-lg:28px;
+  --radius-xl:34px;
+  --radius-pill:999px;
+
+  --glass-bg:rgba(251,249,245,.84);
+  --glass-border:rgba(255,255,255,.62);
+
+  color-scheme:light;
+}
+
+:root[data-theme="dark"]{
+  --bg:#171512;
+  --bg-elev:#211E1A;
+  --bg-soft:#2A2621;
+  --bg-hover:#342E27;
+
+  --text:#F4EFE7;
+  --text-soft:#B8AEA1;
+  --text-faint:#81776C;
+
+  --border:rgba(255,244,229,.09);
+  --border-strong:rgba(255,244,229,.16);
+
+  --brand-1:#D9895C;
+  --brand-2:#C56C4F;
+  --brand-3:#E0A078;
+  --brand-4:#E8BD91;
+
+  --grad-brand:linear-gradient(
+    135deg,
+    #D9895C 0%,
+    #C56C4F 58%,
+    #E0A078 100%
+  );
+
+  --success:#86AE8A;
+  --danger:#D17B72;
+
+  --shadow-sm:
+    0 1px 2px rgba(0,0,0,.25),
+    0 2px 6px rgba(0,0,0,.18);
+
+  --shadow-md:
+    0 6px 16px rgba(0,0,0,.30),
+    0 14px 32px rgba(0,0,0,.22);
+
+  --shadow-lg:
+    0 16px 40px rgba(0,0,0,.38),
+    0 30px 70px rgba(0,0,0,.28);
+
+  --glass-bg:rgba(33,30,26,.86);
+  --glass-border:rgba(255,255,255,.07);
+
+  color-scheme:dark;
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,
+body{
+  overflow-x:hidden;
+  max-width:100%;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+
+  transition:
+    background .35s ease,
+    color .35s ease;
+
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,
+h2,
+h3,
+h4{
+  font-weight:700;
+  letter-spacing:-.025em;
+  margin:0;
+}
+
+button,
+.btn{
+  font-family:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.container-huefy{
+  width:100%;
+  max-width:1240px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+::selection{
+  background:var(--brand-1);
+  color:#fff;
+}
+
+:focus-visible{
+  outline:3px solid rgba(200,117,74,.45);
+  outline-offset:3px;
+  border-radius:10px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.huefy-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  background:var(--glass-bg);
+
+  backdrop-filter:blur(18px) saturate(120%);
+  -webkit-backdrop-filter:blur(18px) saturate(120%);
+
+  border-bottom:1px solid var(--border);
+}
+
+.huefy-header .container-huefy{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  height:70px;
+}
+
+.huefy-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  font-weight:800;
+  font-size:1.3rem;
+
+  text-decoration:none;
+  color:var(--text);
+
+  transition:transform .2s ease;
+}
+
+.huefy-logo:hover{
+  transform:translateY(-1px);
+}
+
+.huefy-logo svg{
+  display:block;
+}
+
+.huefy-nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+.huefy-nav a{
+  padding:9px 15px;
+
+  border-radius:var(--radius-pill);
+
+  text-decoration:none;
+
+  font-weight:500;
+  font-size:.92rem;
+
+  color:var(--text-soft);
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.huefy-nav a:hover{
+  background:var(--bg-soft);
+  color:var(--text);
+  transform:translateY(-1px);
+}
+
+.huefy-nav a.active{
+  background:var(--bg-soft);
+  color:var(--text);
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.icon-btn{
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  border:1px solid var(--border);
+
+  background:var(--bg-elev);
+  color:var(--text);
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:1.05rem;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.icon-btn:hover{
+  transform:translateY(-2px);
+
+  background:var(--bg-soft);
+
+  box-shadow:var(--shadow-sm);
+}
+
+.icon-btn:active{
+  transform:scale(.94);
+}
+
+.nav-toggle{
+  display:none;
+}
+
+@media (max-width:900px){
+
+  .huefy-nav{
+    display:none;
+  }
+
+  .nav-toggle{
+    display:flex;
+  }
+
+  .huefy-nav.mobile-open{
+    display:flex;
+    flex-direction:column;
+
+    position:fixed;
+
+    top:70px;
+    left:12px;
+    right:12px;
+
+    background:var(--bg-elev);
+
+    padding:10px;
+
+    gap:4px;
+
+    border:
+      1px solid var(--border);
+
+    border-radius:
+      0 0
+      var(--radius-lg)
+      var(--radius-lg);
+
+    box-shadow:var(--shadow-lg);
+
+    animation:navDrop .22s ease both;
+  }
+
+  .huefy-nav.mobile-open a{
+    width:100%;
+    text-align:center;
+  }
+}
+
+@keyframes navDrop{
+  from{
+    opacity:0;
+    transform:translateY(-8px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn{
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  padding:12px 22px;
+
+  border-radius:var(--radius-pill);
+
+  border:1px solid transparent;
+
+  font-weight:600;
+  font-size:.94rem;
+
+  cursor:pointer;
+  text-decoration:none;
+
+  transition:
+    transform .18s ease,
+    box-shadow .2s ease,
+    background .2s ease,
+    border-color .2s ease;
+}
+
+.btn:active{
+  transform:scale(.96);
+}
+
+.btn-primary{
+  background:var(--grad-brand);
+  color:#fff;
+
+  box-shadow:
+    0 3px 10px rgba(181,92,67,.18);
+}
+
+.btn-primary:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(181,92,67,.23);
+}
+
+.btn-outline{
+  background:transparent;
+
+  border:1.5px solid var(--border-strong);
+
+  color:var(--text);
+}
+
+.btn-outline:hover{
+  background:var(--bg-soft);
+  transform:translateY(-1px);
+}
+
+.btn-soft{
+  background:var(--bg-soft);
+  color:var(--text);
+  border:none;
+}
+
+.btn-soft:hover{
+  background:var(--bg-hover);
+  transform:translateY(-1px);
+}
+
+.btn-sm{
+  padding:8px 14px;
+  font-size:.82rem;
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+  transform:none;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card{
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-lg);
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.card:hover{
+  box-shadow:var(--shadow-md);
+  border-color:var(--border-strong);
+}
+
+.card-lift:hover{
+  transform:translateY(-4px);
+}
+
+.section{
+  padding:64px 0;
+}
+
+.section-title{
+  font-size:clamp(1.6rem,3vw,2.3rem);
+  margin-bottom:8px;
+}
+
+.section-sub{
+  color:var(--text-soft);
+
+  font-size:1.02rem;
+
+  margin-bottom:32px;
+
+  max-width:620px;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+  position:relative;
+
+  overflow:hidden;
+
+  padding:96px 0 72px;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(217,154,114,.16),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(200,117,74,.12),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(228,185,140,.13),
+      transparent 48%
+    );
+}
+
+.hero-blob{
+  position:absolute;
+
+  border-radius:50%;
+
+  filter:blur(60px);
+
+  opacity:.32;
+
+  z-index:0;
+
+  animation:
+    floatBlob 16s ease-in-out infinite;
+}
+
+@keyframes floatBlob{
+
+  0%,
+  100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  33%{
+    transform:
+      translate(28px,-18px)
+      scale(1.07);
+  }
+
+  66%{
+    transform:
+      translate(-20px,22px)
+      scale(.96);
+  }
+}
+
+.hero-content{
+  position:relative;
+
+  z-index:1;
+
+  text-align:center;
+
+  max-width:760px;
+
+  margin:0 auto;
+}
+
+.hero-title{
+  font-size:clamp(2.6rem,7vw,4.6rem);
+
+  background:var(--grad-brand);
+
+  -webkit-background-clip:text;
+  background-clip:text;
+
+  color:transparent;
+
+  line-height:1.05;
+}
+
+.hero-subtitle{
+  font-weight:600;
+
+  font-size:clamp(1.1rem,2vw,1.4rem);
+
+  margin-top:10px;
+}
+
+.hero-desc{
+  color:var(--text-soft);
+
+  font-size:1.05rem;
+
+  margin:18px auto 30px;
+
+  max-width:560px;
+}
+
+.hero-actions{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:12px;
+
+  justify-content:center;
+}
+
+
+/* =========================================================
+   TOASTS
+   ========================================================= */
+
+.toast-host{
+  position:fixed;
+
+  bottom:22px;
+  right:22px;
+
+  z-index:9999;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+
+  max-width:90vw;
+}
+
+.huefy-toast{
+  background:var(--bg-elev);
+
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  box-shadow:var(--shadow-lg);
+
+  padding:13px 18px;
+
+  border-radius:var(--radius-md);
+
+  font-weight:500;
+  font-size:.9rem;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  opacity:0;
+
+  transform:
+    translateY(12px)
+    scale(.96);
+
+  transition:.25s ease;
+}
+
+.huefy-toast.show{
+  opacity:1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+.toast-icon{
+  color:var(--brand-1);
+  font-weight:700;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.huefy-modal-overlay{
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(38,35,31,.42);
+
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  z-index:2000;
+
+  padding:16px;
+}
+
+.huefy-modal-overlay.open{
+  display:flex;
+}
+
+.huefy-modal{
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  border-radius:var(--radius-xl);
+
+  padding:30px;
+
+  max-width:520px;
+
+  width:100%;
+
+  box-shadow:var(--shadow-lg);
+
+  max-height:86vh;
+
+  overflow-y:auto;
+
+  animation:
+    modalIn .28s
+    cubic-bezier(.22,1,.36,1);
+}
+
+@keyframes modalIn{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(20px)
+      scale(.96);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.huefy-modal h3{
+  margin-bottom:14px;
+}
+
+.huefy-modal-close{
+  float:right;
+
+  width:36px;
+  height:36px;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  background:var(--bg-soft);
+
+  border:1px solid var(--border);
+
+  border-radius:50%;
+
+  font-size:1.1rem;
+
+  cursor:pointer;
+
+  color:var(--text-soft);
+
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.huefy-modal-close:hover{
+  background:var(--bg-hover);
+
+  color:var(--text);
+
+  transform:rotate(5deg);
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+input[type=text],
+input[type=search],
+input[type=number],
+select,
+textarea{
+  font-family:inherit;
+
+  background:var(--bg-soft);
+
+  border:1.5px solid transparent;
+
+  color:var(--text);
+
+  border-radius:var(--radius-md);
+
+  padding:11px 14px;
+
+  font-size:.92rem;
+
+  width:100%;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+  background:var(--bg-hover);
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:rgba(200,117,74,.55);
+
+  background:var(--bg-elev);
+
+  box-shadow:
+    0 0 0 4px rgba(200,117,74,.08);
+
+  outline:none;
+}
+
+input[type=color]{
+  width:46px;
+  height:46px;
+
+  border:none;
+
+  border-radius:14px;
+
+  padding:3px;
+
+  cursor:pointer;
+
+  background:var(--bg-soft);
+}
+
+input[type=range]{
+  width:100%;
+  accent-color:var(--brand-1);
+}
+
+label{
+  font-weight:500;
+
+  font-size:.82rem;
+
+  color:var(--text-soft);
+
+  display:block;
+
+  margin-bottom:7px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.huefy-footer{
+  border-top:1px solid var(--border);
+
+  padding:44px 0 28px;
+
+  margin-top:40px;
+
+  color:var(--text-soft);
+
+  font-size:.88rem;
+}
+
+.huefy-footer .container-huefy{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  justify-content:space-between;
+
+  gap:16px;
+
+  align-items:center;
+}
+
+
+/* =========================================================
+   CHIPS / BADGES
+   ========================================================= */
+
+.chip{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:6px 13px;
+
+  border-radius:var(--radius-pill);
+
+  background:var(--bg-soft);
+
+  font-size:.78rem;
+
+  font-weight:600;
+
+  color:var(--text-soft);
+
+  border:1px solid var(--border);
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    color .2s ease;
+}
+
+.chip.active{
+  background:var(--grad-brand);
+
+  color:#fff;
+
+  border-color:transparent;
+
+  box-shadow:
+    0 4px 12px rgba(181,92,67,.14);
+}
+
+.chip:hover{
+  transform:translateY(-1px);
+
+  background:var(--bg-hover);
+}
+
+.chip.active:hover{
+  background:var(--grad-brand);
+}
+
+
+/* =========================================================
+   SKELETON / SHIMMER
+   ========================================================= */
+
+@keyframes shimmer{
+
+  0%{
+    background-position:-500px 0;
+  }
+
+  100%{
+    background-position:500px 0;
+  }
+}
+
+.shimmer{
+  background:
+    linear-gradient(
+      90deg,
+      var(--bg-soft) 25%,
+      var(--border-strong) 37%,
+      var(--bg-soft) 63%
+    );
+
+  background-size:500px 100%;
+
+  animation:
+    shimmer 1.6s infinite;
+}
+
+
+/* =========================================================
+   GENERAL ANIMATIONS
+   ========================================================= */
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+
+    transform:translateY(14px);
+  }
+
+  to{
+    opacity:1;
+
+    transform:none;
+  }
+}
+
+.fade-up{
+  animation:fadeUp .5s ease both;
+}
+
+@keyframes popIn{
+
+  from{
+    opacity:0;
+
+    transform:scale(.86);
+  }
+
+  to{
+    opacity:1;
+
+    transform:scale(1);
+  }
+}
+
+.pop-in{
+  animation:
+    popIn .38s
+    cubic-bezier(.34,1.56,.64,1)
+    both;
+}
+
+@keyframes bounceLetter{
+
+  0%,
+  100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+@keyframes glow{
+
+  0%,
+  100%{
+    box-shadow:
+      0 0 0 rgba(200,117,74,0);
+  }
+
+  50%{
+    box-shadow:
+      0 0 26px rgba(200,117,74,.22);
+  }
+}
+
+.glow-pulse{
+  animation:
+    glow 2.4s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+  width:9px;
+  height:9px;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--border-strong);
+
+  border-radius:var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:var(--text-faint);
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+
+/* =========================================================
+   RESPONSIVE GRID
+   ========================================================= */
+
+.grid{
+  display:grid;
+  gap:20px;
+}
+
+.grid-2{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.grid-3{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.grid-4{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.grid-6{
+  grid-template-columns:repeat(6,1fr);
+}
+
+@media (max-width:1000px){
+
+  .grid-4{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid-6{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .grid-3{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media (max-width:640px){
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-6{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .container-huefy{
+    padding:0 16px;
+  }
+
+  .hero{
+    padding:72px 0 56px;
+  }
+
+  .section{
+    padding:48px 0;
+  }
+}
+
+.visually-hidden{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   MASCOT
+   ========================================================= */
+
+.huefy-mascot{
+  width:54px;
+  height:54px;
+
+  transition:
+    transform .3s ease,
+    filter .3s ease;
+}
+
+.huefy-mascot:hover{
+  transform:
+    translateY(-3px)
+    rotate(-2deg);
+}
+
+.huefy-mascot.bounce{
+  animation:
+    mascotBounce .6s ease;
+}
+
+@keyframes mascotBounce{
+
+  0%,
+  100%{
+    transform:
+      translateY(0)
+      rotate(0);
+  }
+
+  30%{
+    transform:
+      translateY(-10px)
+      rotate(-8deg);
+  }
+
+  60%{
+    transform:
+      translateY(0)
+      rotate(6deg);
+  }
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
+
+.kbd{
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  min-width:28px;
+
+  background:var(--bg-soft);
+
+  border:1px solid var(--border-strong);
+
+  border-radius:9px;
+
+  padding:3px 8px;
+
+  font-family:monospace;
+
+  font-size:.78rem;
+
+  box-shadow:
+    inset 0 -1px 0 var(--border);
+}
+
+
+/* =========================================================
+   TIMELINE PAGE
+   ========================================================= */
+
+.timeline-hero{
+  text-align:center;
+
+  padding:58px 0 18px;
+
+  position:relative;
+
+  transition:
+    background 1s ease;
+}
+
+.era-scroll{
+  display:flex;
+
+  gap:10px;
+
+  overflow-x:auto;
+
+  padding:20px 4px 28px;
+
+  scroll-snap-type:x proximity;
+
+  scrollbar-width:thin;
+
+  -webkit-overflow-scrolling:touch;
+}
+
+.era-scroll::-webkit-scrollbar{
+  height:6px;
+}
+
+
+/* =========================================================
+   ERA CHIPS
+   ========================================================= */
+
+.era-chip{
+  flex:0 0 auto;
+
+  padding:11px 18px;
+
+  border-radius:var(--radius-pill);
+
+  border:1px solid var(--border);
+
+  background:var(--bg-elev);
+
+  cursor:pointer;
+
+  font-weight:600;
+
+  font-size:.88rem;
+
+  scroll-snap-align:start;
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    background .22s ease,
+    color .22s ease,
+    border-color .22s ease;
+
+  white-space:nowrap;
+}
+
+.era-chip:hover{
+  background:var(--bg-soft);
+
+  transform:translateY(-2px);
+
+  box-shadow:var(--shadow-sm);
+}
+
+.era-chip.active{
+  background:var(--grad-brand);
+
+  color:#fff;
+
+  border-color:transparent;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 6px 16px rgba(181,92,67,.20);
+}
+
+.era-chip.active:hover{
+  background:var(--grad-brand);
+}
+
+
+/* =========================================================
+   ERA DISPLAY
+   ========================================================= */
+
+.era-display{
+  transition:
+    opacity .3s ease,
+    transform .3s ease;
+}
+
+.era-display.morphing{
+  opacity:0;
+
+  transform:
+    translateY(8px)
+    scale(.99);
+}
+
+.era-title{
+  font-size:clamp(1.8rem,4vw,2.6rem);
+
+  margin-bottom:8px;
+}
+
+.era-desc{
+  color:var(--text-soft);
+
+  max-width:640px;
+
+  margin-bottom:22px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   ERA PALETTE
+   ========================================================= */
+
+.era-palette-row{
+  display:flex;
+
+  gap:12px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:26px;
+}
+
+.era-swatch{
+  flex:1 1 120px;
+
+  min-width:120px;
+
+  border-radius:var(--radius-lg);
+
+  overflow:hidden;
+
+  box-shadow:var(--shadow-sm);
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.era-swatch:hover{
+  transform:
+    translateY(-5px)
+    scale(1.01);
+
+  box-shadow:var(--shadow-md);
+
+  border-color:var(--border-strong);
+}
+
+.era-swatch-color{
+  height:104px;
+
+  transition:
+    transform .35s ease,
+    filter .35s ease;
+}
+
+.era-swatch:hover .era-swatch-color{
+  filter:saturate(1.05);
+}
+
+.era-swatch-info{
+  padding:10px 12px;
+
+  font-size:.78rem;
+}
+
+.era-swatch-name{
+  font-weight:600;
+}
+
+.era-swatch-hex{
+  font-family:monospace;
+
+  color:var(--text-faint);
+
+  margin-top:2px;
+}
+
+
+/* =========================================================
+   ERA META
+   ========================================================= */
+
+.era-meta{
+  display:flex;
+
+  gap:18px;
+
+  flex-wrap:wrap;
+
+  margin-top:12px;
+}
+
+.era-meta-box{
+  flex:1;
+
+  min-width:220px;
+
+  padding:20px;
+
+  border-radius:var(--radius-lg);
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.era-meta-box:hover{
+  transform:translateY(-3px);
+
+  box-shadow:var(--shadow-md);
+
+  border-color:var(--border-strong);
+}
+
+
+/* =========================================================
+   TIMELINE BADGES
+   ========================================================= */
+
+.fun-fact-badge{
+  display:inline-flex;
+
+  align-items:center;
+
+  background:var(--bg-soft);
+
+  padding:6px 11px;
+
+  border-radius:var(--radius-pill);
+
+  font-size:.72rem;
+
+  font-weight:700;
+
+  color:var(--brand-1);
+
+  margin-bottom:9px;
+
+  border:1px solid var(--border);
+}
+
+.future-badge{
+  background:
+    linear-gradient(
+      135deg,
+      #C8754A,
+      #D99A72
+    );
+
+  color:#fff;
+
+  padding:6px 13px;
+
+  border-radius:var(--radius-pill);
+
+  font-size:.72rem;
+
+  font-weight:700;
+
+  display:inline-flex;
+
+  align-items:center;
+
+  margin-bottom:10px;
+
+  box-shadow:
+    0 4px 12px rgba(181,92,67,.16);
+}
+
+
+/* =========================================================
+   TIMELINE MOTION
+   ========================================================= */
+
+@keyframes timelineReveal{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(12px)
+      scale(.985);
+  }
+
+  to{
+    opacity:1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.timeline-reveal{
+  animation:
+    timelineReveal .45s
+    cubic-bezier(.22,1,.36,1)
+    both;
+}
+
+
+/* =========================================================
+   MOBILE TIMELINE
+   ========================================================= */
+
+@media (max-width:700px){
+
+  .timeline-hero{
+    padding:46px 0 12px;
+  }
+
+  .era-scroll{
+    gap:8px;
+
+    padding-top:16px;
+    padding-bottom:22px;
+  }
+
+  .era-chip{
+    padding:10px 15px;
+
+    font-size:.82rem;
+  }
+
+  .era-palette-row{
+    gap:8px;
+  }
+
+  .era-swatch{
+    min-width:calc(50% - 8px);
+
+    flex-basis:calc(50% - 8px);
+  }
+
+  .era-swatch-color{
+    height:88px;
+  }
+
+  .era-meta{
+    gap:12px;
+  }
+
+  .era-meta-box{
+    min-width:100%;
+    padding:17px;
+  }
+}
+
+@media (max-width:460px){
+
+  .era-swatch{
+    min-width:100%;
+
+    flex-basis:100%;
+  }
+
+  .era-swatch-color{
+    height:96px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms !important;
+
+    animation-iteration-count:1 !important;
+
+    transition-duration:.001ms !important;
+
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<header class="huefy-header">
+    <div class="container-huefy">
+      <a href="index.html" class="huefy-logo" aria-label="Huefy home">
+        <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#7C5CFF"/>
+              <stop offset="55%" stop-color="#FF6B9D"/>
+              <stop offset="100%" stop-color="#FFD166"/>
+            </linearGradient>
+          </defs>
+          <circle cx="24" cy="24" r="22" fill="url(#logoGrad)"/>
+          <circle cx="24" cy="24" r="22" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+          <path d="M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z" fill="rgba(255,255,255,.92)"/>
+        </svg>
+        <span>Huefy</span>
+      </a>
+      <nav class="huefy-nav" id="mainNav" aria-label="Primary">
+        <a href="index.html#generator" data-nav="generator">Generator</a>
+        <a href="index.html#library" data-nav="library">Library</a>
+        <a href="index.html#templates" data-nav="templates">Templates</a>
+        <a href="game.html" data-nav="games">Games</a>
+        <a href="labs.html" data-nav="labs">Labs</a>
+        <a href="timeline.html" data-nav="timeline">Timeline</a>
+        <a href="index.html#favorites" data-nav="favorites">Favorites</a>
+        <a href="index.html#export" data-nav="export">Export</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="shortcutsBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">&#127769;</button>
+        <button class="icon-btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+      </div>
+    </div>
+  </header>
+  <section class="timeline-hero container-huefy" id="timelineHeroBg">
+    <h1 class="section-title">Color Through Time</h1>
+    <p class="section-sub" style="margin:0 auto;">Explore the colors that defined different eras.</p>
+  </section>
+
+  <section class="container-huefy">
+    <div class="era-scroll" id="eraScroll" role="tablist" aria-label="Choose an era"></div>
+
+    <div class="era-display" id="eraDisplay">
+      <span class="fun-fact-badge" id="eraFictionalBadge" style="display:none;">Fictional / Creative</span>
+      <h2 class="era-title" id="eraTitle"></h2>
+      <p class="era-desc" id="eraDesc"></p>
+      <div class="era-palette-row" id="eraPaletteRow"></div>
+      <div class="era-meta">
+        <div class="card era-meta-box">
+          <h4 style="margin-bottom:8px;">Design Context</h4>
+          <p style="color:var(--text-soft);" id="eraContext"></p>
+        </div>
+        <div class="card era-meta-box">
+          <h4 style="margin-bottom:8px;">Fun Fact</h4>
+          <p style="color:var(--text-soft);" id="eraFunFact"></p>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="eraAddToGenerator" style="margin-top:20px;">Add Era Palette to Generator</button>
+    </div>
+  </section>
+<footer class="huefy-footer">
+    <div class="container-huefy">
+      <div class="huefy-logo" style="font-size:1.05rem;">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="url(#logoGrad)"/>
+          <path d="M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z" fill="rgba(255,255,255,.92)"/>
+        </svg>
+        <span>Huefy</span>
+      </div>
+      <div>Find your perfect colors. Made for people who love color a little too much.</div>
+      <div style="display:flex; gap:14px;">
+        <a href="index.html">Generator</a>
+        <a href="game.html">Games</a>
+        <a href="labs.html">Labs</a>
+        <a href="timeline.html">Timeline</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SHORTCUTS MODAL -->
+  <div class="huefy-modal-overlay" id="shortcutsModal">
+    <div class="huefy-modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+      <button class="huefy-modal-close" aria-label="Close" onclick="closeModal('shortcutsModal')">&times;</button>
+      <h3 id="shortcutsTitle">Keyboard Shortcuts</h3>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Generate palette</span><span class="kbd">Space</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Search colors</span><span class="kbd">/</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Close dialog</span><span class="kbd">Esc</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Save palette</span><span class="kbd">Ctrl/Cmd + S</span></p>
+    </div>
+  </div>
+<script>
+/* ===================== HUEFY CORE (shared across pages) ===================== */
+
+/* ---- STORAGE KEYS ---- */
+const LS = {
+  theme: 'huefy-theme',
+  favorites: 'huefy-favorites',
+  highscores: 'huefy-highscores',
+  settings: 'huefy-settings',
+  lastPalette: 'huefy-last-palette',
+  experiments: 'huefy-experiments'
+};
+
+/* ---- COLOR UTILITIES ---- */
+function clamp(v,min,max){return Math.min(max,Math.max(min,v));}
+
+function hexToRgb(hex){
+  hex = ('' + hex).replace('#','').trim();
+  if(hex.length === 3){ hex = hex.split('').map(c=>c+c).join(''); }
+  const num = parseInt(hex,16);
+  if(isNaN(num) || hex.length !== 6) return {r:0,g:0,b:0};
+  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
+}
+function rgbToHex(r,g,b){
+  const h = n => clamp(Math.round(n),0,255).toString(16).padStart(2,'0');
+  return '#' + h(r) + h(g) + h(b);
+}
+function rgbToHsl(r,g,b){
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){ h=s=0; }
+  else{
+    const d = max-min;
+    s = l>0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h=(g-b)/d+(g<b?6:0); break;
+      case g: h=(b-r)/d+2; break;
+      case b: h=(r-g)/d+4; break;
+    }
+    h/=6;
+  }
+  return { h: Math.round(h*360), s: Math.round(s*100), l: Math.round(l*100) };
+}
+function hslToRgb(h,s,l){
+  h=((h%360)+360)%360; s=clamp(s,0,100)/100; l=clamp(l,0,100)/100;
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;} else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;} else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+  return { r:Math.round((r+m)*255), g:Math.round((g+m)*255), b:Math.round((b+m)*255) };
+}
+function hexToHsl(hex){ const {r,g,b}=hexToRgb(hex); return rgbToHsl(r,g,b); }
+function hslToHex(h,s,l){ const {r,g,b}=hslToRgb(h,s,l); return rgbToHex(r,g,b); }
+function isValidHex(hex){ return /^#?[0-9a-fA-F]{6}$/.test(hex) || /^#?[0-9a-fA-F]{3}$/.test(hex); }
+function normalizeHex(hex){
+  hex = ('' + hex).trim();
+  if(hex[0] !== '#') hex = '#' + hex;
+  if(hex.length === 4){ hex = '#' + hex.slice(1).split('').map(c=>c+c).join(''); }
+  return hex.toUpperCase();
+}
+function relLuminance(hex){
+  const {r,g,b} = hexToRgb(hex);
+  const chan = v => { v/=255; return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4); };
+  return 0.2126*chan(r)+0.7152*chan(g)+0.0722*chan(b);
+}
+function contrastRatio(hex1,hex2){
+  const L1 = relLuminance(hex1), L2 = relLuminance(hex2);
+  const light = Math.max(L1,L2), dark = Math.min(L1,L2);
+  return (light+0.05)/(dark+0.05);
+}
+function colorDistance(hex1,hex2){
+  const a = hexToRgb(hex1), b = hexToRgb(hex2);
+  const dr=a.r-b.r, dg=a.g-b.g, db=a.b-b.b;
+  return Math.sqrt(dr*dr+dg*dg+db*db);
+}
+function hexSimilarity(hex1,hex2){
+  const dist = colorDistance(hex1,hex2);
+  const maxDist = Math.sqrt(255*255*3);
+  return clamp(100 - (dist/maxDist)*100, 0, 100);
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[randInt(0,arr.length-1)]; }
+function mixHex(hexA,hexB,pct){
+  pct = clamp(pct,0,100)/100;
+  const a=hexToRgb(hexA), b=hexToRgb(hexB);
+  return rgbToHex(a.r+(b.r-a.r)*pct, a.g+(b.g-a.g)*pct, a.b+(b.b-a.b)*pct);
+}
+
+/* ---- DETERMINISTIC SEEDED RNG (for Color of the Day / era stability) ---- */
+function seededRandom(seed){
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+function dateSeed(){
+  const d = new Date();
+  return d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+}
+
+/* ---- 1000-COLOR LIBRARY GENERATOR ---- */
+const FAMILIES = [
+  { name:'Red',    hue: 355 },
+  { name:'Orange', hue: 28  },
+  { name:'Yellow', hue: 48  },
+  { name:'Green',  hue: 140 },
+  { name:'Blue',   hue: 212 },
+  { name:'Purple', hue: 265 },
+  { name:'Pink',   hue: 330 },
+  { name:'Brown',  hue: 25  }
+];
+const CATEGORIES = [
+  { name:'Very Light', l:[88,95], s:[25,45], count:16 },
+  { name:'Light',      l:[76,88], s:[35,55], count:16 },
+  { name:'Soft',       l:[64,76], s:[30,50], count:16 },
+  { name:'Medium',     l:[52,64], s:[45,65], count:16 },
+  { name:'Rich',       l:[40,52], s:[55,75], count:15 },
+  { name:'Vibrant',    l:[45,58], s:[80,100],count:16 },
+  { name:'Dark',       l:[24,36], s:[45,70], count:15 },
+  { name:'Very Dark',  l:[10,20], s:[35,60], count:15 }
+];
+const ADJ = ['Electric','Suspicious','Dreamy','Cosmic','Tiny','Midnight','Neon','Vintage','Wild','Lucky','Salty','Sunny','Frosty','Dusty','Sleepy','Rowdy','Velvet','Glossy','Silent','Feral','Retro','Cheerful','Moody','Bright','Muted','Bold','Gentle','Rustic','Whimsical','Sneaky','Ancient','Modern','Tropical','Arctic','Smoky','Juicy','Zesty','Plush','Rare','Secret','Golden','Stormy','Quiet','Vivid','Cozy','Brave','Curious','Lazy','Chill','Fancy'];
+const NOUN = {
+  Red:['Guava','Ember','Tomato','Rocket','Cherry','Lipstick','Fire Truck','Brick','Cardinal','Crimson Wave','Ruby','Salsa','Rose Hip','Candy Apple','Poppy','Blaze','Sunburn','Firecracker','Barn'],
+  Orange:['Apricot','Tangerine','Pumpkin','Marmalade','Sunset','Papaya','Cantaloupe','Mango Tango','Carrot','Amber Glow','Peach Fuzz','Clay Pot','Traffic Cone','Yam','Copper Penny'],
+  Yellow:['Lemon','Banana','Sunflower','Mustard','Duckling','Corn','Honey','Canary','School Bus','Pineapple','Daffodil','Lemonade','Butterscotch','Goldfinch'],
+  Green:['Fern','Basil','Pickle','Alien Juice','Avocado','Mint','Shamrock','Cactus','Seaweed','Kiwi','Pesto','Forest Floor','Lime Fizz','Moss','Jungle Vine'],
+  Blue:['Pool Party','Midnight Soda','Blueberry','Denim','Sky Marble','Lagoon','Sailor','Glacier','Bluebell','Ocean Drift','Storm Cloud','Peacock','Sapphire Pool','Cobalt Note'],
+  Purple:['Cosmic Grape','Lavender Field','Plum','Grape Soda','Amethyst','Orchid','Eggplant','Wisteria','Violet Hour','Galaxy Dust','Mulberry','Royal Cape'],
+  Pink:['CEO of Pink','Bubblegum','Flamingo','Cotton Candy','Grandma\'s Sofa','Blush','Watermelon Cooler','Peony','Salmon Run','Carnation','Strawberry Milk','Taffy'],
+  Brown:['Suspicious Lemon Pie','Cocoa','Chestnut','Cinnamon Bun','Mocha','Saddle Leather','Walnut','Toffee','Root Beer','Pecan','Maple Syrup','Coffee Grounds','Terracotta Pot']
+};
+const PERSONALITIES = [
+  'Loud, friendly, and always five minutes late.',
+  'Quietly confident. Owns the room without trying.',
+  'Shows up uninvited but somehow makes the party better.',
+  'Takes itself very seriously. Please don\'t laugh.',
+  'The friend who remembers your coffee order.',
+  'A little chaotic, mostly lovable.',
+  'Dresses up for occasions that don\'t require it.',
+  'Calm on the outside, wild playlist on the inside.',
+  'Overthinks everything, including its own shade.',
+  'The last one to leave the party, first one to text after.',
+  'Convinced it invented the color wheel.',
+  'Cozy, dependable, allergic to drama.',
+  'Bold decisions, no regrets.',
+  'Whispers instead of talking, somehow louder for it.',
+  'Been around forever, still the coolest in the room.'
+];
+const STORIES = [
+  'Inspired by neon signs reflected on wet streets at 2 AM.',
+  'Found at the bottom of a half-finished lemonade on a July porch.',
+  'What the sky looks like right before it decides to storm.',
+  'Named after a jacket someone wore once and never took off.',
+  'The exact shade of a childhood bedroom nightlight.',
+  'Discovered in the last five minutes of a summer sunset.',
+  'Borrowed from a bowl of fruit that sat out a little too long.',
+  'The color of a mixtape cover nobody remembers making.',
+  'Spotted on a vintage car nobody could afford to fix.',
+  'What nostalgia would look like if you could bottle it.',
+  'The last color left on the palette after a long night of painting.',
+  'A shade that showed up in a dream and refused to leave.',
+  'Pulled from a postcard sent from a place that may not exist.',
+  'The color of the neon sign outside a diner that never closes.',
+  'What static electricity would taste like, probably.'
+];
+
+function buildColorLibrary(){
+  const colors = [];
+  const usedNames = new Set();
+  FAMILIES.forEach(fam=>{
+    let catIndex = 0;
+    CATEGORIES.forEach(cat=>{
+      for(let i=0;i<cat.count;i++){
+        const hueJitter = (fam.name==='Brown') ? randInt(-6,6) : randInt(-10,10);
+        const hue = fam.hue + hueJitter + (i%3===0?randInt(-4,4):0);
+        const sat = cat.name==='Very Dark' && fam.name==='Brown' ? randInt(cat.s[0],cat.s[1])*0.8 : randInt(cat.s[0],cat.s[1]);
+        const light = randInt(cat.l[0],cat.l[1]);
+        const hex = hslToHex(((hue%360)+360)%360, sat, light);
+        let name;
+        let attempts = 0;
+        do {
+          name = `${pick(ADJ)} ${pick(NOUN[fam.name])}`;
+          attempts++;
+        } while(usedNames.has(name) && attempts < 8);
+        usedNames.add(name);
+        colors.push({
+          name,
+          hex,
+          family: fam.name,
+          category: cat.name,
+          personality: pick(PERSONALITIES),
+          story: pick(STORIES)
+        });
+      }
+      catIndex++;
+    });
+  });
+  return colors;
+}
+const HUEFY_COLORS = buildColorLibrary(); // 1000 colors
+
+/* ---- COLOR OF THE DAY (deterministic) ---- */
+function getColorOfDay(){
+  const seed = dateSeed();
+  const idx = Math.floor(seededRandom(seed) * HUEFY_COLORS.length);
+  return HUEFY_COLORS[idx];
+}
+
+/* ---- THEME ---- */
+function initTheme(){
+  const saved = localStorage.getItem(LS.theme);
+  const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  return theme;
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem(LS.theme, next);
+  updateThemeIcon();
+}
+function updateThemeIcon(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const cur = document.documentElement.getAttribute('data-theme');
+  btn.innerHTML = cur === 'dark' ? '&#9728;&#65039;' : '&#127769;';
+  btn.setAttribute('aria-label', cur === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+/* ---- TOASTS ---- */
+function ensureToastHost(){
+  let host = document.getElementById('toastHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'toastHost';
+    host.className = 'toast-host';
+    host.setAttribute('aria-live','polite');
+    document.body.appendChild(host);
+  }
+  return host;
+}
+function toast(msg, icon){
+  const host = ensureToastHost();
+  const t = document.createElement('div');
+  t.className = 'huefy-toast';
+  t.innerHTML = `<span class="toast-icon">${icon || '&#10003;'}</span><span>${msg}</span>`;
+  host.appendChild(t);
+  requestAnimationFrame(()=> t.classList.add('show'));
+  setTimeout(()=>{
+    t.classList.remove('show');
+    setTimeout(()=> t.remove(), 300);
+  }, 2600);
+}
+
+/* ---- CLIPBOARD ---- */
+async function copyText(text, label){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(label || 'Copied!');
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast(label || 'Copied!'); } catch(err){ toast('Copy failed'); }
+    ta.remove();
+  }
+}
+
+/* ---- FAVORITES ---- */
+function getFavorites(){
+  try{ return JSON.parse(localStorage.getItem(LS.favorites)) || []; }catch(e){ return []; }
+}
+function saveFavorites(list){ localStorage.setItem(LS.favorites, JSON.stringify(list)); }
+function addFavorite(name, colors){
+  const list = getFavorites();
+  list.unshift({ id: Date.now().toString(36), name: sanitizeText(name || 'Untitled Palette'), colors: colors.slice(), created: Date.now() });
+  saveFavorites(list);
+  return list;
+}
+function deleteFavorite(id){
+  saveFavorites(getFavorites().filter(f=>f.id!==id));
+}
+function renameFavorite(id, newName){
+  const list = getFavorites();
+  const f = list.find(x=>x.id===id);
+  if(f) f.name = sanitizeText(newName);
+  saveFavorites(list);
+}
+
+/* ---- HIGH SCORES ---- */
+function getHighScores(){
+  try{ return JSON.parse(localStorage.getItem(LS.highscores)) || {}; }catch(e){ return {}; }
+}
+function setHighScore(game, score){
+  const scores = getHighScores();
+  if(!scores[game] || score > scores[game]) { scores[game] = score; localStorage.setItem(LS.highscores, JSON.stringify(scores)); return true; }
+  return false;
+}
+
+/* ---- SANITIZATION ---- */
+function sanitizeText(str){
+  return ('' + str).replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])).slice(0,80);
+}
+
+/* ---- EXPORTS: PNG ---- */
+function exportPaletteAsPNG(colors, filename){
+  const w = 900, headerH = 90, swatchH = 260;
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = headerH + swatchH;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,w,canvas.height);
+  ctx.fillStyle = '#111827';
+  ctx.font = '700 28px sans-serif';
+  ctx.fillText('Huefy', 24, 42);
+  ctx.font = '400 14px sans-serif';
+  ctx.fillStyle = '#6b7280';
+  ctx.fillText('huefy — find your perfect colors', 24, 66);
+  const sw = w / colors.length;
+  colors.forEach((hex,i)=>{
+    ctx.fillStyle = hex;
+    ctx.fillRect(i*sw, headerH, sw, swatchH - 40);
+    ctx.fillStyle = contrastRatio(hex,'#000000') > contrastRatio(hex,'#ffffff') ? '#000000' : '#ffffff';
+    ctx.font = '600 14px monospace';
+    ctx.fillText(hex.toUpperCase(), i*sw + 10, headerH + swatchH - 55);
+  });
+  ctx.fillStyle = '#f3f4f6';
+  ctx.fillRect(0, headerH + swatchH - 40, w, 40);
+  colors.forEach((hex,i)=>{
+    ctx.fillStyle = '#374151';
+    ctx.font = '500 12px monospace';
+    ctx.fillText(hex.toUpperCase(), i*sw + 10, headerH + swatchH - 14);
+  });
+  const link = document.createElement('a');
+  link.download = (filename || 'huefy-palette') + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ---- EXPORTS: CSS / JSON / TXT ---- */
+function paletteToCSS(colors){
+  let out = ':root {\n';
+  colors.forEach((hex,i)=> out += `  --color-${i+1}: ${hex.toUpperCase()};\n`);
+  out += '}\n';
+  return out;
+}
+function paletteToJSON(colors){
+  return JSON.stringify({ palette: colors.map(c=>c.toUpperCase()) }, null, 2);
+}
+function paletteToTXT(colors){
+  let out = 'Huefy Palette\n=============\n\n';
+  colors.forEach((hex,i)=>{
+    const rgb = hexToRgb(hex); const hsl = hexToHsl(hex);
+    out += `Color ${i+1}\n  HEX: ${hex.toUpperCase()}\n  RGB: rgb(${rgb.r}, ${rgb.g}, ${rgb.b})\n  HSL: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)\n\n`;
+  });
+  return out;
+}
+function downloadTextFile(content, filename, mime){
+  const blob = new Blob([content], { type: mime || 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ---- MINIMAL GIF89a ENCODER (no external library) ---- */
+/* Simple LZW-based GIF encoder producing an animated, looping GIF from RGB frames. */
+function GifWriter(){
+  this.bytes = [];
+}
+GifWriter.prototype.writeByte = function(b){ this.bytes.push(b & 0xFF); };
+GifWriter.prototype.writeBytes = function(arr){ for(let i=0;i<arr.length;i++) this.writeByte(arr[i]); };
+GifWriter.prototype.writeShort = function(s){ this.writeByte(s & 0xFF); this.writeByte((s>>8)&0xFF); };
+GifWriter.prototype.writeString = function(s){ for(let i=0;i<s.length;i++) this.writeByte(s.charCodeAt(i)); };
+
+function lzwEncode(minCodeSize, pixels){
+  const clearCode = 1 << minCodeSize;
+  const eoiCode = clearCode + 1;
+  let codeSize = minCodeSize + 1;
+  let nextCode = eoiCode + 1;
+  let dict = {};
+  const resetDict = () => { dict = {}; for(let i=0;i<clearCode;i++) dict[String.fromCharCode(i)] = i; nextCode = eoiCode + 1; codeSize = minCodeSize + 1; };
+  resetDict();
+  const output = [];
+  let curBits = 0, curVal = 0;
+  const emit = (code) => {
+    curVal |= (code << curBits);
+    curBits += codeSize;
+    while(curBits >= 8){ output.push(curVal & 0xFF); curVal >>= 8; curBits -= 8; }
+  };
+  emit(clearCode);
+  let w = String.fromCharCode(pixels[0]);
+  for(let i=1;i<pixels.length;i++){
+    const k = String.fromCharCode(pixels[i]);
+    const wk = w + k;
+    if(dict.hasOwnProperty(wk)){ w = wk; }
+    else{
+      emit(dict[w]);
+      dict[wk] = nextCode++;
+      if(nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
+      if(nextCode >= 4096){ emit(clearCode); resetDict(); }
+      w = k;
+    }
+  }
+  emit(dict[w]);
+  emit(eoiCode);
+  if(curBits > 0){ output.push(curVal & 0xFF); }
+  return output;
+}
+
+function buildPaletteTable(colorList){
+  // colorList: array of [r,g,b]; pad to power of 2, max 256
+  let size = 2;
+  while(size < colorList.length) size *= 2;
+  size = Math.min(size, 256);
+  const table = [];
+  for(let i=0;i<size;i++){
+    table.push(colorList[i] || [0,0,0]);
+  }
+  return table;
+}
+
+function encodeGif(width, height, frames, delayCs, globalPaletteRgb){
+  // frames: array of Uint8Array of indices (length w*h) matching globalPaletteRgb
+  const gw = new GifWriter();
+  const table = buildPaletteTable(globalPaletteRgb);
+  const bitsNeeded = Math.max(2, Math.ceil(Math.log2(table.length)));
+  gw.writeString('GIF89a');
+  gw.writeShort(width); gw.writeShort(height);
+  const gctFlag = 1, colorRes = 7, sortFlag = 0;
+  const gctSizeField = bitsNeeded - 1;
+  const packed = (gctFlag<<7) | (colorRes<<4) | (sortFlag<<3) | gctSizeField;
+  gw.writeByte(packed);
+  gw.writeByte(0); // bg color index
+  gw.writeByte(0); // pixel aspect ratio
+  table.forEach(c => { gw.writeByte(c[0]); gw.writeByte(c[1]); gw.writeByte(c[2]); });
+  // Netscape looping extension
+  gw.writeByte(0x21); gw.writeByte(0xFF); gw.writeByte(11);
+  gw.writeString('NETSCAPE2.0');
+  gw.writeByte(3); gw.writeByte(1); gw.writeShort(0); gw.writeByte(0);
+  frames.forEach(indices=>{
+    gw.writeByte(0x21); gw.writeByte(0xF9); gw.writeByte(4);
+    gw.writeByte(0x04); // disposal: restore to background
+    gw.writeShort(delayCs);
+    gw.writeByte(0); gw.writeByte(0);
+    gw.writeByte(0x2C);
+    gw.writeShort(0); gw.writeShort(0);
+    gw.writeShort(width); gw.writeShort(height);
+    gw.writeByte(0);
+    const minCodeSize = bitsNeeded;
+    gw.writeByte(minCodeSize);
+    const lzwBytes = lzwEncode(minCodeSize, indices);
+    let idx = 0;
+    while(idx < lzwBytes.length){
+      const chunk = lzwBytes.slice(idx, idx+255);
+      gw.writeByte(chunk.length);
+      gw.writeBytes(chunk);
+      idx += 255;
+    }
+    gw.writeByte(0);
+  });
+  gw.writeByte(0x3B);
+  return new Uint8Array(gw.bytes);
+}
+
+function exportPaletteAsGIF(colors, opts){
+  opts = opts || {};
+  const width = 480, height = 280;
+  const frameDelayCs = opts.frameDelayCs || 60; // in 1/100s
+  const transitionSteps = opts.steps || 8;
+  // Build a shared 256-color-safe palette by quantizing each swatch + transitions to nearest of a fixed web-safe-ish set
+  const paletteRgb = [];
+  const paletteMap = new Map();
+  const key = (r,g,b)=> `${r},${g},${b}`;
+  function addColor(r,g,b){
+    r = Math.round(r/17)*17; g = Math.round(g/17)*17; b = Math.round(b/17)*17; // 6x6x6-ish quantize (like web-safe)
+    const k = key(r,g,b);
+    if(!paletteMap.has(k) && paletteRgb.length < 250){
+      paletteMap.set(k, paletteRgb.length);
+      paletteRgb.push([r,g,b]);
+    }
+    return paletteMap.has(k) ? paletteMap.get(k) : 0;
+  }
+  const frames = [];
+  const n = colors.length;
+  const barW = Math.floor(width / n);
+  for(let step=0; step<=transitionSteps; step++){
+    const t = step / transitionSteps;
+    const indices = new Uint8Array(width*height);
+    for(let cIdx=0; cIdx<n; cIdx++){
+      const fromHex = colors[cIdx];
+      const toHex = colors[(cIdx+1)%n];
+      const mixed = mixHex(fromHex, toHex, t*100*0.15); // subtle drift each frame
+      const {r,g,b} = hexToRgb(mixed);
+      const paletteIndex = addColor(r,g,b);
+      for(let y=0;y<height-36;y++){
+        for(let x=cIdx*barW; x<Math.min((cIdx+1)*barW, width); x++){
+          indices[y*width+x] = paletteIndex;
+        }
+      }
+    }
+    // bottom label strip uses a fixed near-white / near-black
+    const bg = addColor(255,255,255);
+    for(let y=height-36;y<height;y++){
+      for(let x=0;x<width;x++) indices[y*width+x] = bg;
+    }
+    frames.push(indices);
+  }
+  const gifBytes = encodeGif(width, height, frames, frameDelayCs, paletteRgb);
+  const blob = new Blob([gifBytes], { type: 'image/gif' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'huefy-palette.gif';
+  a.click();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+}
+
+/* ---- REDUCED MOTION HELPER ---- */
+function prefersReducedMotion(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+/* ===================== SHARED UI WIRING ===================== */
+function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.add('open'); const f=m.querySelector('input,button,select,textarea'); if(f) f.focus(); } }
+function closeModal(id){ const m=document.getElementById(id); if(m) m.classList.remove('open'); }
+document.addEventListener('click', (e)=>{
+  if(e.target.classList && e.target.classList.contains('huefy-modal-overlay')){ e.target.classList.remove('open'); }
+});
+
+function initSharedChrome(activeKey){
+  initTheme();
+  updateThemeIcon();
+  document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+  document.getElementById('shortcutsBtn')?.addEventListener('click', ()=> openModal('shortcutsModal'));
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('mainNav');
+  navToggle?.addEventListener('click', ()=>{
+    const open = nav.classList.toggle('mobile-open');
+    navToggle.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  if(activeKey){
+    document.querySelectorAll(`[data-nav="${activeKey}"]`).forEach(a=> a.classList.add('active'));
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.huefy-modal-overlay.open').forEach(m=> m.classList.remove('open'));
+    }
+  });
+}
+/* ===================== TIMELINE DATA ===================== */
+const ERAS = [
+  {
+    id:'ancient', name:'Ancient', fictional:false,
+    desc:'Colors drawn from earth, minerals, and the earliest pigments humans learned to make.',
+    context:'Ancient artists relied on natural pigments — ochre from iron-rich clay, charcoal black, and rare minerals like lapis lazuli — so palettes were earthy and limited by what could be mined or ground by hand.',
+    funFact:'Egyptian blue, made from ground minerals, is considered one of the first synthetic pigments ever created.',
+    colors:[
+      {name:'Ochre Earth', hex:'#C97C3D'}, {name:'Nile Clay', hex:'#8A5A3B'},
+      {name:'Lapis Depth', hex:'#2A4B8D'}, {name:'Papyrus Cream', hex:'#E8DCC0'},
+      {name:'Charcoal Rite', hex:'#2B2622'}
+    ]
+  },
+  {
+    id:'renaissance', name:'Renaissance', fictional:false,
+    desc:'Rich, saturated pigments made possible by new trade routes and painting techniques.',
+    context:'Renaissance painters had access to costly imported pigments like ultramarine, and used glazing techniques to build deep, luminous color in oil paint.',
+    funFact:'Ultramarine, made from crushed lapis lazuli, was once more expensive than gold.',
+    colors:[
+      {name:'Ultramarine Vow', hex:'#2A3E8F'}, {name:'Venetian Red', hex:'#A6402A'},
+      {name:'Gilded Ochre', hex:'#C79A3D'}, {name:'Fresco Cream', hex:'#EDE0C8'},
+      {name:'Umber Shadow', hex:'#4A3324'}
+    ]
+  },
+  {
+    id:'victorian', name:'Victorian', fictional:false,
+    desc:'Deep, saturated jewel tones made fashionable by new synthetic dyes.',
+    context:'The invention of synthetic dyes like mauveine in 1856 introduced vivid purples and greens to fashion and interiors for the first time at scale.',
+    funFact:'Mauveine, the first synthetic dye, was accidentally discovered while a chemist was trying to synthesize a malaria treatment.',
+    colors:[
+      {name:'Mauveine Hour', hex:'#7B4B8A'}, {name:'Forest Parlor', hex:'#2E4B3A'},
+      {name:'Oxblood Drape', hex:'#5C1F1F'}, {name:'Brass Filigree', hex:'#9A7B3F'},
+      {name:'Ivory Lace', hex:'#EFE8D8'}
+    ]
+  },
+  {
+    id:'artdeco', name:'Art Deco', fictional:false,
+    desc:'Bold geometry paired with metallics, black, and confident jewel tones.',
+    context:'The 1920s–30s Art Deco movement favored glamour and symmetry — gold and silver metallics against deep black and rich color blocks.',
+    funFact:'The Chrysler Building\'s steel crown is one of the most famous Art Deco color-and-material statements ever built.',
+    colors:[
+      {name:'Deco Gold', hex:'#C9A24B'}, {name:'Onyx Line', hex:'#171512'},
+      {name:'Emerald Fan', hex:'#1F6E5C'}, {name:'Champagne Fizz', hex:'#E8D9B5'},
+      {name:'Garnet Trim', hex:'#7A1F2B'}
+    ]
+  },
+  {
+    id:'1950s', name:'1950s', fictional:false,
+    desc:'Pastel optimism meets diner chrome and post-war suburban color.',
+    context:'Post-war prosperity brought pastel kitchens, chrome diners, and cheerful mint and pink color schemes into everyday American life.',
+    funFact:'Pastel-colored kitchen appliances became a status symbol in 1950s American homes.',
+    colors:[
+      {name:'Diner Mint', hex:'#9FDDCB'}, {name:'Poodle Skirt Pink', hex:'#F1A7BD'},
+      {name:'Chrome Cream', hex:'#F4EEDD'}, {name:'Malt Shop Turquoise', hex:'#3FA7B0'},
+      {name:'Sock Hop Red', hex:'#D64541'}
+    ]
+  },
+  {
+    id:'1960s', name:'1960s', fictional:false,
+    desc:'Psychedelic brights and bold contrast, fueled by pop art and counterculture.',
+    context:'The 1960s embraced high-saturation color as a form of expression, influenced by pop art, psychedelia, and the space race.',
+    funFact:'Pop artist Andy Warhol\'s bold, flat color blocking directly shaped 1960s design trends.',
+    colors:[
+      {name:'Flower Power Orange', hex:'#F2712B'}, {name:'Mod Magenta', hex:'#D6357F'},
+      {name:'Op Art Yellow', hex:'#F5D000'}, {name:'Peace Sign Teal', hex:'#2A9D8F'},
+      {name:'Lava Lamp Purple', hex:'#6A3FA0'}
+    ]
+  },
+  {
+    id:'1970s', name:'1970s', fictional:false,
+    desc:'Earthy harvest tones — avocado, mustard, and burnt orange.',
+    context:'The 1970s shifted toward warm, natural-feeling palettes in home decor, dominated by avocado green and harvest gold appliances.',
+    funFact:'Avocado green and harvest gold were so common in kitchens that they became a defining symbol of the decade.',
+    colors:[
+      {name:'Avocado Kitchen', hex:'#6B8E4E'}, {name:'Harvest Gold', hex:'#D9A441'},
+      {name:'Burnt Sienna Rug', hex:'#B5502B'}, {name:'Macrame Cream', hex:'#E9DCC3'},
+      {name:'Brown Corduroy', hex:'#5A3E2B'}
+    ]
+  },
+  {
+    id:'1980s', name:'1980s', fictional:false,
+    desc:'Neon brights against black, born from arcade screens and new wave design.',
+    context:'The rise of arcade games, MTV, and neon signage pushed 1980s design toward electric, high-contrast color combinations.',
+    funFact:'Neon colors became so associated with the era that they\'re still called "80s colors" today.',
+    colors:[
+      {name:'Arcade Magenta', hex:'#FF2D95'}, {name:'Grid Cyan', hex:'#2DE2E6'},
+      {name:'Neon Lime', hex:'#C6FF00'}, {name:'Synthwave Purple', hex:'#7B2FF7'},
+      {name:'Terminal Black', hex:'#0E0E14'}
+    ]
+  },
+  {
+    id:'1990s', name:'1990s', fictional:false,
+    desc:'Muted grunge tones alongside early web brights.',
+    context:'The 1990s split between grunge-influenced muted earth tones in fashion and the saturated primary colors of early web and tech branding.',
+    funFact:'Early web-safe color palettes were limited to 216 colors to work reliably across monitors.',
+    colors:[
+      {name:'Flannel Plaid', hex:'#5A4A42'}, {name:'Dial-Up Blue', hex:'#3B6FB5'},
+      {name:'Windbreaker Yellow', hex:'#F2C230'}, {name:'Grunge Olive', hex:'#6B6F3A'},
+      {name:'CRT Purple', hex:'#8A5FC2'}
+    ]
+  },
+  {
+    id:'y2k', name:'Y2K', fictional:false,
+    desc:'Chrome, iridescent blues, and bubblegum futurism at the turn of the millennium.',
+    context:'Anticipation around the year 2000 inspired metallic, iridescent, and "cyber" color choices in fashion, gadgets, and web design.',
+    funFact:'The translucent, colorful plastic of the original iMac G3 helped define the Y2K color aesthetic.',
+    colors:[
+      {name:'iMac Bondi', hex:'#28C7C7'}, {name:'Chrome Flash', hex:'#C7D2DB'},
+      {name:'Bubblegum Y2K', hex:'#FF7FC0'}, {name:'Cyber Lilac', hex:'#B18CF2'},
+      {name:'Millennium Silver', hex:'#DCE3E8'}
+    ]
+  },
+  {
+    id:'2010s', name:'2010s', fictional:false,
+    desc:'Flat design brights and the rise of muted "millennial" pastels.',
+    context:'Mobile app design popularized flat, saturated UI colors early in the decade, later joined by softer "millennial pink" tones.',
+    funFact:'Millennial pink became so ubiquitous in branding that it was widely written about as a cultural phenomenon.',
+    colors:[
+      {name:'Flat UI Blue', hex:'#2E86DE'}, {name:'Millennial Pink', hex:'#F2C6C2'},
+      {name:'Instagram Coral', hex:'#F2704B'}, {name:'App Icon Teal', hex:'#1ABC9C'},
+      {name:'Minimalist Grey', hex:'#B8C0C8'}
+    ]
+  },
+  {
+    id:'today', name:'Today', fictional:false,
+    desc:'Confident brand color, soft neutrals, and dark-mode-first palettes.',
+    context:'Current design favors accessible contrast, dark-mode compatibility, and bold single brand accent colors against neutral backgrounds.',
+    funFact:'Dark mode support is now considered a baseline expectation for most modern apps and websites.',
+    colors:[
+      {name:'Brand Violet', hex:'#7C5CFF'}, {name:'Neutral Cloud', hex:'#F2F2F7'},
+      {name:'Ink Interface', hex:'#15151F'}, {name:'Accent Coral', hex:'#FF6B6B'},
+      {name:'Signal Green', hex:'#28D9A0'}
+    ]
+  },
+  {
+    id:'future', name:'Future', fictional:true,
+    desc:'A fictional, speculative palette imagining tomorrow\'s color language.',
+    context:'This era is a creative projection, not a historical record — imagining how deep space darks, bio-luminescent accents, and metallic finishes might define future interfaces.',
+    funFact:'This palette is entirely speculative and made for inspiration, not based on real design history.',
+    colors:[
+      {name:'Deep Space Void', hex:'#05050C'}, {name:'Bio Signal Green', hex:'#39FF9E'},
+      {name:'Chrome Circuit', hex:'#C7D6E0'}, {name:'Reactor Magenta', hex:'#FF2FB0'},
+      {name:'Quantum Violet', hex:'#8C3CF2'}
+    ]
+  }
+];
+// fix an accidental typo-safe hex above defensively
+ERAS.forEach(era => era.colors.forEach(c => { if(!isValidHex(c.hex)) c.hex = '#F5D000'; }));
+
+let currentEraIndex = 0;
+
+function renderEraScroll(){
+  const scroll = document.getElementById('eraScroll');
+  scroll.innerHTML = ERAS.map((era,i)=>`<button class="era-chip ${i===0?'active':''}" data-idx="${i}" role="tab" aria-selected="${i===0}">${era.name}</button>`).join('');
+  scroll.querySelectorAll('.era-chip').forEach(chip=>{
+    chip.onclick = ()=> selectEra(parseInt(chip.dataset.idx));
+  });
+  // drag-to-scroll for mouse users
+  let isDown = false, startX, scrollLeft;
+  scroll.addEventListener('mousedown', e=>{ isDown = true; startX = e.pageX - scroll.offsetLeft; scrollLeft = scroll.scrollLeft; });
+  window.addEventListener('mouseup', ()=> isDown = false);
+  scroll.addEventListener('mouseleave', ()=> isDown = false);
+  scroll.addEventListener('mousemove', e=>{
+    if(!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - scroll.offsetLeft;
+    scroll.scrollLeft = scrollLeft - (x - startX);
+  });
+}
+
+function selectEra(idx){
+  if(idx === currentEraIndex) return;
+  currentEraIndex = idx;
+  document.querySelectorAll('.era-chip').forEach((c,i)=>{
+    c.classList.toggle('active', i===idx);
+    c.setAttribute('aria-selected', i===idx);
+  });
+  const display = document.getElementById('eraDisplay');
+  const hero = document.getElementById('timelineHeroBg');
+  const doMorph = !prefersReducedMotion();
+  const era = ERAS[idx];
+  const heroGrad = `radial-gradient(circle at 20% 20%, ${era.colors[0].hex}33, transparent 55%), radial-gradient(circle at 80% 10%, ${era.colors[1] ? era.colors[1].hex : era.colors[0].hex}33, transparent 55%)`;
+  if(doMorph){
+    display.classList.add('morphing');
+    setTimeout(()=>{ renderEraContent(era); hero.style.background = heroGrad; display.classList.remove('morphing'); }, 220);
+  } else {
+    renderEraContent(era); hero.style.background = heroGrad;
+  }
+  document.querySelector(`.era-chip[data-idx="${idx}"]`)?.scrollIntoView({ behavior: doMorph ? 'smooth':'auto', inline:'center', block:'nearest' });
+}
+
+function renderEraContent(era){
+  document.getElementById('eraFictionalBadge').style.display = era.fictional ? 'inline-block' : 'none';
+  document.getElementById('eraTitle').textContent = era.name;
+  document.getElementById('eraDesc').textContent = era.desc;
+  document.getElementById('eraContext').textContent = era.context;
+  document.getElementById('eraFunFact').textContent = era.funFact;
+  document.getElementById('eraPaletteRow').innerHTML = era.colors.map(c=>`
+    <div class="era-swatch pop-in">
+      <div class="era-swatch-color" style="background:${c.hex}"></div>
+      <div class="era-swatch-info">
+        <div class="era-swatch-name">${sanitizeText(c.name)}</div>
+        <div class="era-swatch-hex">${c.hex.toUpperCase()}</div>
+      </div>
+    </div>`).join('');
+}
+
+function wireEraActions(){
+  document.getElementById('eraAddToGenerator').onclick = ()=>{
+    const era = ERAS[currentEraIndex];
+    let p = [];
+    try{ p = JSON.parse(localStorage.getItem(LS.lastPalette)) || []; }catch(e){ p = []; }
+    era.colors.forEach(c=>{ if(p.length < 10) p.push({ hex:c.hex, locked:false }); });
+    localStorage.setItem(LS.lastPalette, JSON.stringify(p));
+    toast(`${era.name} palette added! Check the Generator.`);
+  };
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  initSharedChrome('timeline');
+  renderEraScroll();
+  renderEraContent(ERAS[0]);
+  wireEraActions();
+});
+</script>
+</body>
+</html>

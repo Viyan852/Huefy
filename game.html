@@ -1,0 +1,3169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huefy Games — Think you know color?</title>
+<meta name="description" content="Play Huefy color games: Guess the Hex, Color Memory, Odd Color Out, Color Match, and Palette Puzzle.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 48 48%22%3E%3Cdefs%3E%3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%2248%22 y2=%2248%22%3E%3Cstop offset=%220%25%22 stop-color=%22%237C5CFF%22/%3E%3Cstop offset=%2255%25%22 stop-color=%22%23FF6B9D%22/%3E%3Cstop offset=%22100%25%22 stop-color=%22%23FFD166%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx=%2224%22 cy=%2224%22 r=%2222%22 fill=%22url(%23g)%22/%3E%3Cpath d=%22M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z%22 fill=%22white%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+/* =========================================================
+   HUEFY GAMES — SOFT BEIGE / CLAUDE-INSPIRED UI
+   Visual redesign only
+   Existing HTML + JavaScript selectors preserved
+   ========================================================= */
+
+:root{
+  --bg:#F5F0E8;
+  --bg-elev:#FBF9F5;
+  --bg-soft:#EDE7DC;
+  --bg-hover:#E7DFD3;
+
+  --text:#26231F;
+  --text-soft:#686158;
+  --text-faint:#9B9388;
+
+  --border:rgba(55,48,40,.10);
+  --border-strong:rgba(55,48,40,.17);
+
+  --brand-1:#C8754A;
+  --brand-2:#B55C43;
+  --brand-3:#D99A72;
+  --brand-4:#E4B98C;
+
+  --grad-brand:linear-gradient(135deg,#C8754A,#B55C43);
+
+  --success:#6E9B73;
+  --danger:#B9685F;
+
+  --shadow-sm:
+    0 1px 2px rgba(53,45,36,.035),
+    0 2px 5px rgba(53,45,36,.035);
+
+  --shadow-md:
+    0 4px 10px rgba(53,45,36,.055),
+    0 10px 25px rgba(53,45,36,.045);
+
+  --shadow-lg:
+    0 12px 30px rgba(53,45,36,.08),
+    0 24px 55px rgba(53,45,36,.055);
+
+  --radius-sm:12px;
+  --radius-md:18px;
+  --radius-lg:26px;
+  --radius-xl:32px;
+  --radius-pill:999px;
+
+  --glass-bg:rgba(251,249,245,.84);
+  --glass-border:rgba(255,255,255,.58);
+
+  color-scheme:light;
+}
+
+:root[data-theme="dark"]{
+  --bg:#171512;
+  --bg-elev:#211E1A;
+  --bg-soft:#2A2621;
+  --bg-hover:#332E27;
+
+  --text:#F4EFE7;
+  --text-soft:#B8AEA1;
+  --text-faint:#81776C;
+
+  --border:rgba(255,244,229,.09);
+  --border-strong:rgba(255,244,229,.16);
+
+  --brand-1:#D9895C;
+  --brand-2:#C56C4F;
+  --brand-3:#E0A078;
+  --brand-4:#E8BD91;
+
+  --grad-brand:linear-gradient(135deg,#D9895C,#C56C4F);
+
+  --success:#86AE8A;
+  --danger:#D17B72;
+
+  --shadow-sm:
+    0 1px 2px rgba(0,0,0,.28),
+    0 2px 5px rgba(0,0,0,.18);
+
+  --shadow-md:
+    0 8px 22px rgba(0,0,0,.28),
+    0 18px 38px rgba(0,0,0,.18);
+
+  --shadow-lg:
+    0 18px 45px rgba(0,0,0,.38),
+    0 30px 70px rgba(0,0,0,.28);
+
+  --glass-bg:rgba(33,30,26,.86);
+  --glass-border:rgba(255,255,255,.07);
+
+  color-scheme:dark;
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,
+body{
+  overflow-x:hidden;
+  max-width:100%;
+}
+
+body{
+  margin:0;
+
+  background:
+    radial-gradient(
+      circle at 50% -18%,
+      rgba(220,190,155,.13),
+      transparent 42%
+    ),
+    var(--bg);
+
+  color:var(--text);
+
+  transition:
+    background .35s ease,
+    color .35s ease;
+
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,
+h2,
+h3,
+h4{
+  font-weight:700;
+  letter-spacing:-.025em;
+  margin:0;
+}
+
+button,
+.btn{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.container-huefy{
+  width:100%;
+  max-width:1240px;
+  margin:0 auto;
+  padding:0 22px;
+}
+
+::selection{
+  background:rgba(200,117,74,.22);
+  color:var(--text);
+}
+
+:focus-visible{
+  outline:2px solid var(--brand-1);
+  outline-offset:3px;
+  border-radius:12px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.huefy-header{
+  position:sticky;
+  top:0;
+  z-index:100;
+
+  background:var(--glass-bg);
+
+  backdrop-filter:blur(22px) saturate(120%);
+  -webkit-backdrop-filter:blur(22px) saturate(120%);
+
+  border-bottom:1px solid var(--border);
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.20);
+}
+
+.huefy-header .container-huefy{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:68px;
+}
+
+.huefy-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  font-weight:800;
+  font-size:1.28rem;
+
+  text-decoration:none;
+
+  color:var(--text);
+
+  letter-spacing:-.035em;
+}
+
+.huefy-logo svg{
+  display:block;
+}
+
+.huefy-nav{
+  display:flex;
+  align-items:center;
+  gap:3px;
+}
+
+.huefy-nav a{
+  padding:8px 13px;
+
+  border-radius:12px;
+
+  text-decoration:none;
+
+  font-weight:500;
+  font-size:.9rem;
+
+  color:var(--text-soft);
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.huefy-nav a:hover,
+.huefy-nav a.active{
+  background:var(--bg-soft);
+  color:var(--text);
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.icon-btn{
+  width:40px;
+  height:40px;
+
+  border-radius:14px;
+
+  border:1px solid var(--border);
+
+  background:var(--bg-elev);
+
+  cursor:pointer;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:1rem;
+
+  color:var(--text);
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+.icon-btn:hover{
+  transform:translateY(-1px);
+
+  background:var(--bg-soft);
+
+  box-shadow:var(--shadow-sm);
+}
+
+.nav-toggle{
+  display:none;
+}
+
+@media(max-width:900px){
+
+  .huefy-nav{
+    display:none;
+  }
+
+  .nav-toggle{
+    display:flex;
+  }
+
+  .huefy-nav.mobile-open{
+
+    display:flex;
+
+    flex-direction:column;
+
+    position:fixed;
+
+    top:68px;
+    left:12px;
+    right:12px;
+
+    background:var(--bg-elev);
+
+    padding:10px;
+
+    gap:3px;
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    box-shadow:var(--shadow-lg);
+  }
+
+  .huefy-nav.mobile-open a{
+    width:100%;
+    padding:11px 14px;
+  }
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn{
+
+  display:inline-flex;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:8px;
+
+  padding:11px 18px;
+
+  border-radius:15px;
+
+  border:1px solid transparent;
+
+  font-weight:600;
+  font-size:.9rem;
+
+  cursor:pointer;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .2s ease,
+    border-color .2s ease;
+
+  text-decoration:none;
+}
+
+.btn:active{
+  transform:scale(.975);
+}
+
+.btn-primary{
+
+  background:var(--text);
+
+  color:var(--bg);
+
+  box-shadow:var(--shadow-sm);
+}
+
+.btn-primary:hover{
+
+  transform:translateY(-1px);
+
+  box-shadow:var(--shadow-md);
+}
+
+.btn-outline{
+
+  background:transparent;
+
+  border-color:var(--border-strong);
+
+  color:var(--text);
+}
+
+.btn-outline:hover{
+
+  background:var(--bg-elev);
+
+  border-color:rgba(55,48,40,.23);
+}
+
+.btn-soft{
+
+  background:var(--bg-soft);
+
+  color:var(--text);
+
+  border-color:transparent;
+}
+
+.btn-soft:hover{
+  background:var(--bg-hover);
+}
+
+.btn-sm{
+
+  padding:8px 12px;
+
+  font-size:.8rem;
+
+  border-radius:12px;
+}
+
+.btn:disabled{
+
+  opacity:.5;
+
+  cursor:not-allowed;
+
+  transform:none;
+}
+
+
+/* =========================================================
+   GENERIC CARDS
+   ========================================================= */
+
+.card{
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  border-radius:24px;
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease;
+}
+
+.card:hover{
+  box-shadow:var(--shadow-md);
+}
+
+.card-lift:hover{
+  transform:translateY(-3px);
+}
+
+.section{
+  padding:64px 0;
+}
+
+.section-title{
+
+  font-size:clamp(1.65rem,3vw,2.3rem);
+
+  margin-bottom:8px;
+}
+
+.section-sub{
+
+  color:var(--text-soft);
+
+  font-size:1rem;
+
+  margin-bottom:30px;
+
+  max-width:620px;
+
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:82px 0 48px;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(211,164,122,.17),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(188,133,101,.12),
+      transparent 43%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(222,194,157,.16),
+      transparent 50%
+    );
+}
+
+.hero-blob{
+
+  position:absolute;
+
+  border-radius:50%;
+
+  filter:blur(70px);
+
+  opacity:.25;
+
+  z-index:0;
+
+  animation:floatBlob 16s ease-in-out infinite;
+}
+
+@keyframes floatBlob{
+
+  0%,100%{
+    transform:translate(0,0) scale(1);
+  }
+
+  33%{
+    transform:translate(24px,-18px) scale(1.06);
+  }
+
+  66%{
+    transform:translate(-18px,20px) scale(.96);
+  }
+}
+
+.hero-content{
+
+  position:relative;
+
+  z-index:1;
+
+  text-align:center;
+
+  max-width:760px;
+
+  margin:0 auto;
+}
+
+.hero-title{
+
+  font-size:clamp(2.65rem,7vw,4.6rem);
+
+  line-height:1.02;
+
+  background:
+    linear-gradient(
+      135deg,
+      #9E5B43,
+      #C8754A 45%,
+      #D49A70
+    );
+
+  -webkit-background-clip:text;
+
+  background-clip:text;
+
+  color:transparent;
+
+  animation:
+    heroGradient 8s ease-in-out infinite alternate;
+}
+
+@keyframes heroGradient{
+
+  0%{
+    filter:saturate(.9);
+  }
+
+  100%{
+    filter:saturate(1.15);
+  }
+}
+
+.hero-subtitle{
+
+  font-weight:600;
+
+  font-size:clamp(1.05rem,2vw,1.35rem);
+
+  margin-top:12px;
+}
+
+.hero-desc{
+
+  color:var(--text-soft);
+
+  font-size:1.03rem;
+
+  line-height:1.7;
+
+  margin:18px auto 30px;
+
+  max-width:570px;
+}
+
+.hero-actions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  justify-content:center;
+}
+
+
+/* =========================================================
+   TOASTS
+   ========================================================= */
+
+.toast-host{
+
+  position:fixed;
+
+  bottom:22px;
+  right:22px;
+
+  z-index:9999;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:9px;
+
+  max-width:90vw;
+}
+
+.huefy-toast{
+
+  background:var(--bg-elev);
+
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  box-shadow:var(--shadow-lg);
+
+  padding:12px 16px;
+
+  border-radius:16px;
+
+  font-weight:500;
+
+  font-size:.88rem;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  opacity:0;
+
+  transform:translateY(10px) scale(.97);
+
+  transition:.25s ease;
+}
+
+.huefy-toast.show{
+
+  opacity:1;
+
+  transform:translateY(0) scale(1);
+}
+
+.toast-icon{
+
+  color:var(--brand-1);
+
+  font-weight:700;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.huefy-modal-overlay{
+
+  position:fixed;
+
+  inset:0;
+
+  background:rgba(40,34,28,.38);
+
+  backdrop-filter:blur(7px);
+
+  -webkit-backdrop-filter:blur(7px);
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  z-index:2000;
+
+  padding:16px;
+}
+
+.huefy-modal-overlay.open{
+  display:flex;
+}
+
+.huefy-modal{
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  border-radius:28px;
+
+  padding:28px;
+
+  max-width:520px;
+
+  width:100%;
+
+  box-shadow:var(--shadow-lg);
+
+  max-height:86vh;
+
+  overflow-y:auto;
+
+  animation:
+    modalIn .25s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes modalIn{
+
+  from{
+    opacity:0;
+    transform:translateY(14px) scale(.97);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.huefy-modal h3{
+  margin-bottom:14px;
+}
+
+.huefy-modal-close{
+
+  float:right;
+
+  background:var(--bg-soft);
+
+  border:none;
+
+  width:34px;
+  height:34px;
+
+  border-radius:11px;
+
+  font-size:1rem;
+
+  cursor:pointer;
+
+  color:var(--text-soft);
+
+  transition:.2s;
+}
+
+.huefy-modal-close:hover{
+
+  background:var(--bg-hover);
+
+  color:var(--text);
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+input[type=text],
+input[type=search],
+input[type=number],
+select,
+textarea{
+
+  font:inherit;
+
+  background:var(--bg-soft);
+
+  border:1px solid transparent;
+
+  color:var(--text);
+
+  border-radius:15px;
+
+  padding:11px 14px;
+
+  font-size:.9rem;
+
+  width:100%;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:var(--text-faint);
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+  outline:none;
+
+  border-color:rgba(200,117,74,.38);
+
+  background:var(--bg-elev);
+
+  box-shadow:
+    0 0 0 3px rgba(200,117,74,.08);
+}
+
+input[type=color]{
+
+  width:44px;
+  height:44px;
+
+  border:none;
+
+  border-radius:13px;
+
+  padding:3px;
+
+  cursor:pointer;
+
+  background:var(--bg-soft);
+}
+
+input[type=range]{
+
+  width:100%;
+
+  accent-color:var(--brand-1);
+}
+
+label{
+
+  font-weight:600;
+
+  font-size:.8rem;
+
+  color:var(--text-soft);
+
+  display:block;
+
+  margin-bottom:6px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.huefy-footer{
+
+  border-top:1px solid var(--border);
+
+  padding:44px 0 28px;
+
+  margin-top:40px;
+
+  color:var(--text-soft);
+
+  font-size:.86rem;
+}
+
+.huefy-footer .container-huefy{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  justify-content:space-between;
+
+  gap:16px;
+
+  align-items:center;
+}
+
+
+/* =========================================================
+   CHIPS
+   ========================================================= */
+
+.chip{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  padding:7px 12px;
+
+  border-radius:999px;
+
+  background:var(--bg-soft);
+
+  font-size:.77rem;
+
+  font-weight:600;
+
+  color:var(--text-soft);
+
+  border:1px solid transparent;
+
+  cursor:pointer;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease,
+    border-color .2s ease;
+}
+
+.chip.active{
+
+  background:var(--text);
+
+  color:var(--bg);
+
+  border-color:transparent;
+}
+
+.chip:hover{
+
+  transform:translateY(-1px);
+
+  border-color:var(--border);
+}
+
+
+/* =========================================================
+   SKELETON / SHIMMER
+   ========================================================= */
+
+@keyframes shimmer{
+
+  0%{
+    background-position:-500px 0;
+  }
+
+  100%{
+    background-position:500px 0;
+  }
+}
+
+.shimmer{
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--bg-soft) 25%,
+      var(--bg-hover) 37%,
+      var(--bg-soft) 63%
+    );
+
+  background-size:500px 100%;
+
+  animation:shimmer 1.6s infinite;
+}
+
+
+/* =========================================================
+   GENERAL ANIMATIONS
+   ========================================================= */
+
+@keyframes fadeUp{
+
+  from{
+    opacity:0;
+    transform:translateY(12px);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+.fade-up{
+  animation:fadeUp .5s ease both;
+}
+
+@keyframes popIn{
+
+  from{
+    opacity:0;
+    transform:scale(.9);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.pop-in{
+
+  animation:
+    popIn .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+
+@keyframes bounceLetter{
+
+  0%,100%{
+    transform:translateY(0);
+  }
+
+  50%{
+    transform:translateY(-9px);
+  }
+}
+
+@keyframes glow{
+
+  0%,100%{
+    box-shadow:0 0 0 rgba(200,117,74,0);
+  }
+
+  50%{
+    box-shadow:
+      0 0 28px rgba(200,117,74,.20);
+  }
+}
+
+.glow-pulse{
+  animation:glow 2.5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+  width:7px;
+  height:7px;
+}
+
+::-webkit-scrollbar-thumb{
+
+  background:
+    rgba(100,88,75,.28);
+
+  border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+  background:
+    rgba(100,88,75,.42);
+}
+
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+
+/* =========================================================
+   RESPONSIVE GRID
+   ========================================================= */
+
+.grid{
+
+  display:grid;
+
+  gap:18px;
+}
+
+.grid-2{
+  grid-template-columns:repeat(2,1fr);
+}
+
+.grid-3{
+  grid-template-columns:repeat(3,1fr);
+}
+
+.grid-4{
+  grid-template-columns:repeat(4,1fr);
+}
+
+.grid-6{
+  grid-template-columns:repeat(6,1fr);
+}
+
+@media(max-width:1000px){
+
+  .grid-4{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid-6{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .grid-3{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:640px){
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .grid-6{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+
+/* =========================================================
+   VISUALLY HIDDEN
+   ========================================================= */
+
+.visually-hidden{
+
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  padding:0;
+  margin:-1px;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+
+/* =========================================================
+   MASCOT
+   ========================================================= */
+
+.huefy-mascot{
+
+  width:54px;
+  height:54px;
+
+  transition:
+    transform .3s ease;
+}
+
+.huefy-mascot.bounce{
+
+  animation:
+    mascotBounce .6s ease;
+}
+
+@keyframes mascotBounce{
+
+  0%,100%{
+    transform:translateY(0) rotate(0);
+  }
+
+  30%{
+    transform:translateY(-10px) rotate(-7deg);
+  }
+
+  60%{
+    transform:translateY(0) rotate(5deg);
+  }
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+   ========================================================= */
+
+.kbd{
+
+  background:var(--bg-soft);
+
+  border:1px solid var(--border);
+
+  border-bottom-color:var(--border-strong);
+
+  border-radius:9px;
+
+  padding:3px 8px;
+
+  font-family:monospace;
+
+  font-size:.78rem;
+
+  color:var(--text-soft);
+
+  box-shadow:
+    0 1px 0 var(--border-strong);
+}
+
+
+/* =========================================================
+   GAME PAGE
+   ========================================================= */
+
+.game-hero{
+
+  text-align:center;
+
+  padding:58px 0 24px;
+}
+
+.game-select{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:9px;
+
+  justify-content:center;
+
+  margin-bottom:30px;
+}
+
+.game-select button{
+
+  min-width:170px;
+
+  border-radius:15px;
+}
+
+
+/* =========================================================
+   GAME PANELS
+   ========================================================= */
+
+.game-panel{
+  display:none;
+}
+
+.game-panel.active{
+
+  display:block;
+
+  animation:
+    gamePanelIn .45s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes gamePanelIn{
+
+  from{
+    opacity:0;
+    transform:translateY(10px) scale(.99);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+
+/* =========================================================
+   GAME STAT BAR
+   ========================================================= */
+
+.game-stat-bar{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  justify-content:center;
+
+  margin-bottom:26px;
+}
+
+.game-stat{
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  padding:11px 19px;
+
+  border-radius:17px;
+
+  text-align:center;
+
+  min-width:105px;
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.game-stat:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:var(--shadow-md);
+}
+
+.game-stat .num{
+
+  font-size:1.3rem;
+
+  font-weight:700;
+
+  line-height:1.2;
+}
+
+.game-stat .lbl{
+
+  font-size:.69rem;
+
+  color:var(--text-faint);
+
+  text-transform:uppercase;
+
+  letter-spacing:.06em;
+
+  margin-top:3px;
+}
+
+
+/* =========================================================
+   GAME STAGE
+   ========================================================= */
+
+.game-stage{
+
+  max-width:650px;
+
+  margin:0 auto;
+
+  text-align:center;
+
+  background:var(--bg-elev);
+
+  border:1px solid var(--border);
+
+  border-radius:30px;
+
+  padding:34px 28px;
+
+  box-shadow:var(--shadow-sm);
+}
+
+
+/* =========================================================
+   BIG COLOR
+   ========================================================= */
+
+.big-swatch{
+
+  width:220px;
+  height:220px;
+
+  border-radius:30px;
+
+  margin:0 auto 24px;
+
+  box-shadow:var(--shadow-lg);
+
+  transition:
+    transform .3s cubic-bezier(.2,.8,.2,1),
+    box-shadow .3s ease;
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.big-swatch::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.18),
+      transparent 48%
+    );
+
+  pointer-events:none;
+}
+
+.big-swatch:hover{
+
+  transform:translateY(-3px) scale(1.012);
+
+  box-shadow:
+    0 18px 42px rgba(53,45,36,.13);
+}
+
+.big-swatch.shake{
+  animation:shakeIt .4s ease;
+}
+
+@keyframes shakeIt{
+
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  25%{
+    transform:translateX(-7px);
+  }
+
+  75%{
+    transform:translateX(7px);
+  }
+}
+
+
+/* =========================================================
+   HEX GUESS
+   ========================================================= */
+
+.hex-guess-row{
+
+  display:flex;
+
+  gap:9px;
+
+  justify-content:center;
+
+  margin-bottom:16px;
+
+  flex-wrap:wrap;
+}
+
+.hex-guess-row input{
+
+  max-width:190px;
+
+  font-family:monospace;
+
+  text-align:center;
+
+  font-size:1.05rem;
+
+  border-radius:15px;
+
+  letter-spacing:.02em;
+}
+
+
+/* =========================================================
+   RESULT BOX
+   ========================================================= */
+
+.result-box{
+
+  display:none;
+
+  margin-top:22px;
+
+  padding:22px;
+
+  background:var(--bg-soft);
+
+  border:1px solid var(--border);
+
+  border-radius:22px;
+}
+
+.result-box.show{
+
+  display:block;
+
+  animation:
+    resultIn .4s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes resultIn{
+
+  from{
+    opacity:0;
+    transform:translateY(8px) scale(.98);
+  }
+
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+
+/* =========================================================
+   COMPARISON
+   ========================================================= */
+
+.compare-row{
+
+  display:flex;
+
+  gap:16px;
+
+  justify-content:center;
+
+  margin:16px 0;
+
+  flex-wrap:wrap;
+}
+
+.compare-swatch{
+
+  width:90px;
+  height:90px;
+
+  border-radius:17px;
+
+  margin:0 auto 6px;
+
+  box-shadow:var(--shadow-sm);
+
+  border:1px solid rgba(0,0,0,.05);
+}
+
+.similarity-badge{
+
+  font-size:2.2rem;
+
+  font-weight:800;
+
+  line-height:1;
+
+  margin-top:6px;
+}
+
+.reaction-text{
+
+  font-size:1.05rem;
+
+  font-weight:600;
+
+  margin-top:9px;
+}
+
+
+/* =========================================================
+   MEMORY GAME
+   ========================================================= */
+
+.memory-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:12px;
+
+  max-width:420px;
+
+  margin:0 auto;
+}
+
+.memory-cell{
+
+  aspect-ratio:1;
+
+  border-radius:17px;
+
+  background:var(--bg-soft);
+
+  border:1px solid var(--border);
+
+  cursor:pointer;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
+}
+
+.memory-cell:hover{
+
+  transform:scale(1.025);
+
+  box-shadow:var(--shadow-sm);
+}
+
+.memory-cell.lit{
+
+  transform:scale(1.05);
+
+  box-shadow:
+    0 0 0 4px rgba(200,117,74,.10),
+    var(--shadow-md);
+}
+
+.memory-cell.correct{
+
+  animation:
+    popIn .3s ease;
+}
+
+.memory-cell.wrong{
+
+  animation:
+    shakeIt .4s ease;
+}
+
+
+/* =========================================================
+   ODD COLOR
+   ========================================================= */
+
+.oddcolor-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,1fr);
+
+  gap:12px;
+
+  max-width:520px;
+
+  margin:0 auto;
+}
+
+.oddcolor-swatch{
+
+  aspect-ratio:1;
+
+  border-radius:17px;
+
+  cursor:pointer;
+
+  border:3px solid transparent;
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+}
+
+.oddcolor-swatch:hover{
+
+  transform:scale(1.035);
+
+  box-shadow:var(--shadow-md);
+}
+
+.oddcolor-swatch.wrong-pick{
+
+  animation:
+    shakeIt .4s ease;
+
+  border-color:var(--danger);
+}
+
+.oddcolor-swatch.correct-pick{
+
+  border-color:var(--success);
+
+  animation:
+    popIn .35s ease;
+}
+
+
+/* =========================================================
+   MATCH GAME
+   ========================================================= */
+
+.match-target{
+
+  width:150px;
+  height:150px;
+
+  border-radius:24px;
+
+  margin:0 auto 22px;
+
+  box-shadow:var(--shadow-md);
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.match-target::after{
+
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.16),
+      transparent 50%
+    );
+}
+
+.match-options{
+
+  display:flex;
+
+  gap:14px;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+}
+
+.match-swatch{
+
+  width:100px;
+  height:100px;
+
+  border-radius:18px;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+
+  border:3px solid transparent;
+}
+
+.match-swatch:hover{
+
+  transform:
+    translateY(-4px)
+    scale(1.02);
+
+  box-shadow:var(--shadow-md);
+}
+
+.match-swatch.correct-pick{
+
+  border-color:var(--success);
+
+  animation:
+    popIn .35s ease;
+}
+
+.match-swatch.wrong-pick{
+
+  border-color:var(--danger);
+
+  animation:
+    shakeIt .4s ease;
+}
+
+
+/* =========================================================
+   PUZZLE
+   ========================================================= */
+
+.puzzle-strip{
+
+  display:flex;
+
+  gap:10px;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+  margin-bottom:14px;
+}
+
+.puzzle-swatch{
+
+  width:80px;
+  height:80px;
+
+  border-radius:16px;
+
+  cursor:grab;
+
+  display:flex;
+
+  align-items:flex-end;
+
+  justify-content:center;
+
+  padding-bottom:6px;
+
+  color:#fff;
+
+  font-family:monospace;
+
+  font-size:.68rem;
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.4);
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
+}
+
+.puzzle-swatch:hover{
+
+  transform:translateY(-3px);
+
+  box-shadow:var(--shadow-md);
+}
+
+.puzzle-swatch.dragging{
+
+  opacity:.35;
+
+  transform:scale(.96);
+}
+
+.puzzle-rule{
+
+  text-align:center;
+
+  color:var(--text-soft);
+
+  margin-bottom:16px;
+}
+
+
+/* =========================================================
+   FEEDBACK
+   ========================================================= */
+
+.feedback-pop{
+
+  position:fixed;
+
+  top:50%;
+  left:50%;
+
+  transform:
+    translate(-50%,-50%)
+    scale(.6);
+
+  font-size:3rem;
+
+  font-weight:800;
+
+  z-index:3000;
+
+  pointer-events:none;
+
+  opacity:0;
+}
+
+.feedback-pop.show{
+
+  animation:
+    feedbackPop .8s ease forwards;
+}
+
+@keyframes feedbackPop{
+
+  0%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.5);
+  }
+
+  30%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1.12);
+  }
+
+  70%{
+    opacity:1;
+
+    transform:
+      translate(-50%,-50%)
+      scale(1);
+  }
+
+  100%{
+    opacity:0;
+
+    transform:
+      translate(-50%,-50%)
+      scale(.9);
+  }
+}
+
+
+/* =========================================================
+   GAME BUTTON POLISH
+   ========================================================= */
+
+.game-select button{
+
+  background:var(--bg-elev);
+
+  color:var(--text);
+
+  border:1px solid var(--border);
+
+  box-shadow:var(--shadow-sm);
+
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.game-select button:hover{
+
+  transform:translateY(-2px);
+
+  background:var(--bg-soft);
+
+  box-shadow:var(--shadow-md);
+
+  border-color:var(--border-strong);
+}
+
+.game-select button.active,
+.game-select button[aria-selected="true"]{
+
+  background:var(--text);
+
+  color:var(--bg);
+
+  border-color:transparent;
+
+  box-shadow:var(--shadow-md);
+}
+
+
+/* =========================================================
+   SOFT GAME CONTROLS
+   ========================================================= */
+
+.game-stage .btn{
+  border-radius:14px;
+}
+
+.game-stage button{
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .2s ease;
+}
+
+.game-stage button:hover:not(:disabled){
+  transform:translateY(-1px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:700px){
+
+  .game-stage{
+
+    padding:25px 17px;
+
+    border-radius:24px;
+  }
+
+  .big-swatch{
+
+    width:min(220px,72vw);
+
+    height:min(220px,72vw);
+
+    border-radius:26px;
+  }
+
+  .game-select button{
+
+    min-width:
+      calc(50% - 5px);
+  }
+
+  .game-stat{
+
+    min-width:90px;
+
+    padding:10px 13px;
+  }
+}
+
+@media(max-width:640px){
+
+  .container-huefy{
+    padding:0 16px;
+  }
+
+  .hero{
+    padding:70px 0 42px;
+  }
+
+  .hero-title{
+    font-size:clamp(2.4rem,13vw,4rem);
+  }
+
+  .hero-actions{
+
+    flex-direction:column;
+
+    align-items:stretch;
+  }
+
+  .hero-actions .btn{
+    width:100%;
+  }
+
+  .game-select{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:8px;
+  }
+
+  .game-select button{
+
+    width:100%;
+
+    min-width:0;
+
+    padding:10px 8px;
+
+    font-size:.8rem;
+  }
+
+  .game-stat-bar{
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(2,1fr);
+  }
+
+  .game-stat{
+
+    width:100%;
+  }
+
+  .memory-grid,
+  .oddcolor-grid{
+
+    gap:8px;
+  }
+
+  .memory-cell,
+  .oddcolor-swatch{
+
+    border-radius:14px;
+  }
+
+  .match-swatch{
+
+    width:82px;
+    height:82px;
+  }
+
+  .match-target{
+
+    width:130px;
+    height:130px;
+  }
+
+  .puzzle-swatch{
+
+    width:68px;
+    height:68px;
+  }
+
+  .toast-host{
+
+    left:14px;
+    right:14px;
+
+    bottom:14px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+
+    animation-duration:.001ms !important;
+
+    animation-iteration-count:1 !important;
+
+    transition-duration:.001ms !important;
+
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+<body>
+<header class="huefy-header">
+    <div class="container-huefy">
+      <a href="index.html" class="huefy-logo" aria-label="Huefy home">
+        <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#7C5CFF"/>
+              <stop offset="55%" stop-color="#FF6B9D"/>
+              <stop offset="100%" stop-color="#FFD166"/>
+            </linearGradient>
+          </defs>
+          <circle cx="24" cy="24" r="22" fill="url(#logoGrad)"/>
+          <circle cx="24" cy="24" r="22" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+          <path d="M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z" fill="rgba(255,255,255,.92)"/>
+        </svg>
+        <span>Huefy</span>
+      </a>
+      <nav class="huefy-nav" id="mainNav" aria-label="Primary">
+        <a href="index.html#generator" data-nav="generator">Generator</a>
+        <a href="index.html#library" data-nav="library">Library</a>
+        <a href="index.html#templates" data-nav="templates">Templates</a>
+        <a href="game.html" data-nav="games">Games</a>
+        <a href="labs.html" data-nav="labs">Labs</a>
+        <a href="timeline.html" data-nav="timeline">Timeline</a>
+        <a href="index.html#favorites" data-nav="favorites">Favorites</a>
+        <a href="index.html#export" data-nav="export">Export</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="shortcutsBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts">?</button>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">&#127769;</button>
+        <button class="icon-btn nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+      </div>
+    </div>
+  </header>
+  <section class="game-hero container-huefy">
+    <h1 class="section-title">Huefy Games</h1>
+    <p class="section-sub" style="margin:0 auto;">Think you know color? Prove it.</p>
+  </section>
+
+  <section class="container-huefy">
+    <div class="game-select" role="tablist" aria-label="Choose a game">
+      <button class="btn btn-outline" data-game="hex" role="tab">&#127919; Guess the HEX</button>
+      <button class="btn btn-outline" data-game="memory" role="tab">&#129504; Color Memory</button>
+      <button class="btn btn-outline" data-game="odd" role="tab">&#128269; Odd Color Out</button>
+      <button class="btn btn-outline" data-game="match" role="tab">&#127919; Color Match</button>
+      <button class="btn btn-outline" data-game="puzzle" role="tab">&#129513; Palette Puzzle</button>
+    </div>
+
+    <div class="game-stat-bar">
+      <div class="game-stat"><div class="num" id="statScore">0</div><div class="lbl">Score</div></div>
+      <div class="game-stat"><div class="num" id="statStreak">0</div><div class="lbl">Streak</div></div>
+      <div class="game-stat"><div class="num" id="statHigh">0</div><div class="lbl">High Score</div></div>
+      <button class="btn btn-soft" id="btnResetGame">Reset Game</button>
+    </div>
+
+    <!-- GAME 1: GUESS THE HEX -->
+    <div class="game-panel" id="panel-hex">
+      <div class="card" style="padding:32px;">
+        <div class="game-stage">
+          <p style="color:var(--text-soft);">What HEX do you think this is?</p>
+          <div class="big-swatch" id="hexTargetSwatch"></div>
+          <div class="hex-guess-row">
+            <input type="text" id="hexGuessInput" placeholder="#FF6B6B" maxlength="7" aria-label="Your HEX guess"/>
+            <button class="btn btn-primary" id="hexGuessBtn">Guess</button>
+            <button class="btn btn-soft" id="hexNextBtn">Next Color</button>
+          </div>
+          <div class="result-box" id="hexResult">
+            <div class="compare-row">
+              <div><div class="compare-swatch" id="hexActualSwatch"></div><small>Actual</small></div>
+              <div><div class="compare-swatch" id="hexGuessSwatch"></div><small>Your Guess</small></div>
+            </div>
+            <div class="similarity-badge" id="hexSimilarity">0%</div>
+            <div class="reaction-text" id="hexReaction"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 2: COLOR MEMORY -->
+    <div class="game-panel" id="panel-memory">
+      <div class="card" style="padding:32px;">
+        <div class="game-stage">
+          <p style="color:var(--text-soft);" id="memoryInstructions">Watch the sequence, then repeat it. Level <span id="memoryLevel">1</span> &middot; Lives: <span id="memoryLives">3</span></p>
+          <div class="memory-grid" id="memoryGrid"></div>
+          <button class="btn btn-primary" id="memoryStartBtn" style="margin-top:20px;">Start Round</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 3: ODD COLOR OUT -->
+    <div class="game-panel" id="panel-odd">
+      <div class="card" style="padding:32px;">
+        <div class="game-stage">
+          <p style="color:var(--text-soft);">Find the color that's slightly different.</p>
+          <div class="oddcolor-grid" id="oddGrid"></div>
+          <button class="btn btn-soft" id="oddNextBtn" style="margin-top:20px;">Skip / New Round</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 4: COLOR MATCH -->
+    <div class="game-panel" id="panel-match">
+      <div class="card" style="padding:32px;">
+        <div class="game-stage">
+          <p style="color:var(--text-soft);">Which option is closest to the target?</p>
+          <div class="match-target" id="matchTarget"></div>
+          <div class="match-options" id="matchOptions"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME 5: PALETTE PUZZLE -->
+    <div class="game-panel" id="panel-puzzle">
+      <div class="card" style="padding:32px;">
+        <div class="game-stage" style="max-width:100%;">
+          <p class="puzzle-rule" id="puzzleRule">Arrange the colors from Light to Dark</p>
+          <div class="puzzle-strip" id="puzzleStrip"></div>
+          <button class="btn btn-primary" id="puzzleCheckBtn">Check Order</button>
+          <button class="btn btn-soft" id="puzzleNewBtn">New Puzzle</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="padding:24px; margin-top:30px;">
+      <h4 style="margin-bottom:8px;">How to Play</h4>
+      <p id="gameHelpText" style="color:var(--text-soft);">Choose a game above to get started. Scores and streaks are tracked per game, and your high scores are saved automatically.</p>
+    </div>
+  </section>
+
+  <div class="feedback-pop" id="feedbackPop"></div>
+<footer class="huefy-footer">
+    <div class="container-huefy">
+      <div class="huefy-logo" style="font-size:1.05rem;">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="24" cy="24" r="22" fill="url(#logoGrad)"/>
+          <path d="M15 30c0-7 4-14 9-16 5 2 9 9 9 16a9 9 0 0 1-18 0Z" fill="rgba(255,255,255,.92)"/>
+        </svg>
+        <span>Huefy</span>
+      </div>
+      <div>Find your perfect colors. Made for people who love color a little too much.</div>
+      <div style="display:flex; gap:14px;">
+        <a href="index.html">Generator</a>
+        <a href="game.html">Games</a>
+        <a href="labs.html">Labs</a>
+        <a href="timeline.html">Timeline</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SHORTCUTS MODAL -->
+  <div class="huefy-modal-overlay" id="shortcutsModal">
+    <div class="huefy-modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+      <button class="huefy-modal-close" aria-label="Close" onclick="closeModal('shortcutsModal')">&times;</button>
+      <h3 id="shortcutsTitle">Keyboard Shortcuts</h3>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Generate palette</span><span class="kbd">Space</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Search colors</span><span class="kbd">/</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Close dialog</span><span class="kbd">Esc</span></p>
+      <p style="display:flex; justify-content:space-between; margin:10px 0;"><span>Save palette</span><span class="kbd">Ctrl/Cmd + S</span></p>
+    </div>
+  </div>
+<script>
+/* ===================== HUEFY CORE (shared across pages) ===================== */
+
+/* ---- STORAGE KEYS ---- */
+const LS = {
+  theme: 'huefy-theme',
+  favorites: 'huefy-favorites',
+  highscores: 'huefy-highscores',
+  settings: 'huefy-settings',
+  lastPalette: 'huefy-last-palette',
+  experiments: 'huefy-experiments'
+};
+
+/* ---- COLOR UTILITIES ---- */
+function clamp(v,min,max){return Math.min(max,Math.max(min,v));}
+
+function hexToRgb(hex){
+  hex = ('' + hex).replace('#','').trim();
+  if(hex.length === 3){ hex = hex.split('').map(c=>c+c).join(''); }
+  const num = parseInt(hex,16);
+  if(isNaN(num) || hex.length !== 6) return {r:0,g:0,b:0};
+  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
+}
+function rgbToHex(r,g,b){
+  const h = n => clamp(Math.round(n),0,255).toString(16).padStart(2,'0');
+  return '#' + h(r) + h(g) + h(b);
+}
+function rgbToHsl(r,g,b){
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b);
+  let h,s,l=(max+min)/2;
+  if(max===min){ h=s=0; }
+  else{
+    const d = max-min;
+    s = l>0.5 ? d/(2-max-min) : d/(max+min);
+    switch(max){
+      case r: h=(g-b)/d+(g<b?6:0); break;
+      case g: h=(b-r)/d+2; break;
+      case b: h=(r-g)/d+4; break;
+    }
+    h/=6;
+  }
+  return { h: Math.round(h*360), s: Math.round(s*100), l: Math.round(l*100) };
+}
+function hslToRgb(h,s,l){
+  h=((h%360)+360)%360; s=clamp(s,0,100)/100; l=clamp(l,0,100)/100;
+  const c=(1-Math.abs(2*l-1))*s;
+  const x=c*(1-Math.abs((h/60)%2-1));
+  const m=l-c/2;
+  let r=0,g=0,b=0;
+  if(h<60){r=c;g=x;b=0;} else if(h<120){r=x;g=c;b=0;} else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;} else if(h<300){r=x;g=0;b=c;} else {r=c;g=0;b=x;}
+  return { r:Math.round((r+m)*255), g:Math.round((g+m)*255), b:Math.round((b+m)*255) };
+}
+function hexToHsl(hex){ const {r,g,b}=hexToRgb(hex); return rgbToHsl(r,g,b); }
+function hslToHex(h,s,l){ const {r,g,b}=hslToRgb(h,s,l); return rgbToHex(r,g,b); }
+function isValidHex(hex){ return /^#?[0-9a-fA-F]{6}$/.test(hex) || /^#?[0-9a-fA-F]{3}$/.test(hex); }
+function normalizeHex(hex){
+  hex = ('' + hex).trim();
+  if(hex[0] !== '#') hex = '#' + hex;
+  if(hex.length === 4){ hex = '#' + hex.slice(1).split('').map(c=>c+c).join(''); }
+  return hex.toUpperCase();
+}
+function relLuminance(hex){
+  const {r,g,b} = hexToRgb(hex);
+  const chan = v => { v/=255; return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4); };
+  return 0.2126*chan(r)+0.7152*chan(g)+0.0722*chan(b);
+}
+function contrastRatio(hex1,hex2){
+  const L1 = relLuminance(hex1), L2 = relLuminance(hex2);
+  const light = Math.max(L1,L2), dark = Math.min(L1,L2);
+  return (light+0.05)/(dark+0.05);
+}
+function colorDistance(hex1,hex2){
+  const a = hexToRgb(hex1), b = hexToRgb(hex2);
+  const dr=a.r-b.r, dg=a.g-b.g, db=a.b-b.b;
+  return Math.sqrt(dr*dr+dg*dg+db*db);
+}
+function hexSimilarity(hex1,hex2){
+  const dist = colorDistance(hex1,hex2);
+  const maxDist = Math.sqrt(255*255*3);
+  return clamp(100 - (dist/maxDist)*100, 0, 100);
+}
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+function pick(arr){ return arr[randInt(0,arr.length-1)]; }
+function mixHex(hexA,hexB,pct){
+  pct = clamp(pct,0,100)/100;
+  const a=hexToRgb(hexA), b=hexToRgb(hexB);
+  return rgbToHex(a.r+(b.r-a.r)*pct, a.g+(b.g-a.g)*pct, a.b+(b.b-a.b)*pct);
+}
+
+/* ---- DETERMINISTIC SEEDED RNG (for Color of the Day / era stability) ---- */
+function seededRandom(seed){
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+function dateSeed(){
+  const d = new Date();
+  return d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+}
+
+/* ---- 1000-COLOR LIBRARY GENERATOR ---- */
+const FAMILIES = [
+  { name:'Red',    hue: 355 },
+  { name:'Orange', hue: 28  },
+  { name:'Yellow', hue: 48  },
+  { name:'Green',  hue: 140 },
+  { name:'Blue',   hue: 212 },
+  { name:'Purple', hue: 265 },
+  { name:'Pink',   hue: 330 },
+  { name:'Brown',  hue: 25  }
+];
+const CATEGORIES = [
+  { name:'Very Light', l:[88,95], s:[25,45], count:16 },
+  { name:'Light',      l:[76,88], s:[35,55], count:16 },
+  { name:'Soft',       l:[64,76], s:[30,50], count:16 },
+  { name:'Medium',     l:[52,64], s:[45,65], count:16 },
+  { name:'Rich',       l:[40,52], s:[55,75], count:15 },
+  { name:'Vibrant',    l:[45,58], s:[80,100],count:16 },
+  { name:'Dark',       l:[24,36], s:[45,70], count:15 },
+  { name:'Very Dark',  l:[10,20], s:[35,60], count:15 }
+];
+const ADJ = ['Electric','Suspicious','Dreamy','Cosmic','Tiny','Midnight','Neon','Vintage','Wild','Lucky','Salty','Sunny','Frosty','Dusty','Sleepy','Rowdy','Velvet','Glossy','Silent','Feral','Retro','Cheerful','Moody','Bright','Muted','Bold','Gentle','Rustic','Whimsical','Sneaky','Ancient','Modern','Tropical','Arctic','Smoky','Juicy','Zesty','Plush','Rare','Secret','Golden','Stormy','Quiet','Vivid','Cozy','Brave','Curious','Lazy','Chill','Fancy'];
+const NOUN = {
+  Red:['Guava','Ember','Tomato','Rocket','Cherry','Lipstick','Fire Truck','Brick','Cardinal','Crimson Wave','Ruby','Salsa','Rose Hip','Candy Apple','Poppy','Blaze','Sunburn','Firecracker','Barn'],
+  Orange:['Apricot','Tangerine','Pumpkin','Marmalade','Sunset','Papaya','Cantaloupe','Mango Tango','Carrot','Amber Glow','Peach Fuzz','Clay Pot','Traffic Cone','Yam','Copper Penny'],
+  Yellow:['Lemon','Banana','Sunflower','Mustard','Duckling','Corn','Honey','Canary','School Bus','Pineapple','Daffodil','Lemonade','Butterscotch','Goldfinch'],
+  Green:['Fern','Basil','Pickle','Alien Juice','Avocado','Mint','Shamrock','Cactus','Seaweed','Kiwi','Pesto','Forest Floor','Lime Fizz','Moss','Jungle Vine'],
+  Blue:['Pool Party','Midnight Soda','Blueberry','Denim','Sky Marble','Lagoon','Sailor','Glacier','Bluebell','Ocean Drift','Storm Cloud','Peacock','Sapphire Pool','Cobalt Note'],
+  Purple:['Cosmic Grape','Lavender Field','Plum','Grape Soda','Amethyst','Orchid','Eggplant','Wisteria','Violet Hour','Galaxy Dust','Mulberry','Royal Cape'],
+  Pink:['CEO of Pink','Bubblegum','Flamingo','Cotton Candy','Grandma\'s Sofa','Blush','Watermelon Cooler','Peony','Salmon Run','Carnation','Strawberry Milk','Taffy'],
+  Brown:['Suspicious Lemon Pie','Cocoa','Chestnut','Cinnamon Bun','Mocha','Saddle Leather','Walnut','Toffee','Root Beer','Pecan','Maple Syrup','Coffee Grounds','Terracotta Pot']
+};
+const PERSONALITIES = [
+  'Loud, friendly, and always five minutes late.',
+  'Quietly confident. Owns the room without trying.',
+  'Shows up uninvited but somehow makes the party better.',
+  'Takes itself very seriously. Please don\'t laugh.',
+  'The friend who remembers your coffee order.',
+  'A little chaotic, mostly lovable.',
+  'Dresses up for occasions that don\'t require it.',
+  'Calm on the outside, wild playlist on the inside.',
+  'Overthinks everything, including its own shade.',
+  'The last one to leave the party, first one to text after.',
+  'Convinced it invented the color wheel.',
+  'Cozy, dependable, allergic to drama.',
+  'Bold decisions, no regrets.',
+  'Whispers instead of talking, somehow louder for it.',
+  'Been around forever, still the coolest in the room.'
+];
+const STORIES = [
+  'Inspired by neon signs reflected on wet streets at 2 AM.',
+  'Found at the bottom of a half-finished lemonade on a July porch.',
+  'What the sky looks like right before it decides to storm.',
+  'Named after a jacket someone wore once and never took off.',
+  'The exact shade of a childhood bedroom nightlight.',
+  'Discovered in the last five minutes of a summer sunset.',
+  'Borrowed from a bowl of fruit that sat out a little too long.',
+  'The color of a mixtape cover nobody remembers making.',
+  'Spotted on a vintage car nobody could afford to fix.',
+  'What nostalgia would look like if you could bottle it.',
+  'The last color left on the palette after a long night of painting.',
+  'A shade that showed up in a dream and refused to leave.',
+  'Pulled from a postcard sent from a place that may not exist.',
+  'The color of the neon sign outside a diner that never closes.',
+  'What static electricity would taste like, probably.'
+];
+
+function buildColorLibrary(){
+  const colors = [];
+  const usedNames = new Set();
+  FAMILIES.forEach(fam=>{
+    let catIndex = 0;
+    CATEGORIES.forEach(cat=>{
+      for(let i=0;i<cat.count;i++){
+        const hueJitter = (fam.name==='Brown') ? randInt(-6,6) : randInt(-10,10);
+        const hue = fam.hue + hueJitter + (i%3===0?randInt(-4,4):0);
+        const sat = cat.name==='Very Dark' && fam.name==='Brown' ? randInt(cat.s[0],cat.s[1])*0.8 : randInt(cat.s[0],cat.s[1]);
+        const light = randInt(cat.l[0],cat.l[1]);
+        const hex = hslToHex(((hue%360)+360)%360, sat, light);
+        let name;
+        let attempts = 0;
+        do {
+          name = `${pick(ADJ)} ${pick(NOUN[fam.name])}`;
+          attempts++;
+        } while(usedNames.has(name) && attempts < 8);
+        usedNames.add(name);
+        colors.push({
+          name,
+          hex,
+          family: fam.name,
+          category: cat.name,
+          personality: pick(PERSONALITIES),
+          story: pick(STORIES)
+        });
+      }
+      catIndex++;
+    });
+  });
+  return colors;
+}
+const HUEFY_COLORS = buildColorLibrary(); // 1000 colors
+
+/* ---- COLOR OF THE DAY (deterministic) ---- */
+function getColorOfDay(){
+  const seed = dateSeed();
+  const idx = Math.floor(seededRandom(seed) * HUEFY_COLORS.length);
+  return HUEFY_COLORS[idx];
+}
+
+/* ---- THEME ---- */
+function initTheme(){
+  const saved = localStorage.getItem(LS.theme);
+  const theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  return theme;
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem(LS.theme, next);
+  updateThemeIcon();
+}
+function updateThemeIcon(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const cur = document.documentElement.getAttribute('data-theme');
+  btn.innerHTML = cur === 'dark' ? '&#9728;&#65039;' : '&#127769;';
+  btn.setAttribute('aria-label', cur === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+}
+
+/* ---- TOASTS ---- */
+function ensureToastHost(){
+  let host = document.getElementById('toastHost');
+  if(!host){
+    host = document.createElement('div');
+    host.id = 'toastHost';
+    host.className = 'toast-host';
+    host.setAttribute('aria-live','polite');
+    document.body.appendChild(host);
+  }
+  return host;
+}
+function toast(msg, icon){
+  const host = ensureToastHost();
+  const t = document.createElement('div');
+  t.className = 'huefy-toast';
+  t.innerHTML = `<span class="toast-icon">${icon || '&#10003;'}</span><span>${msg}</span>`;
+  host.appendChild(t);
+  requestAnimationFrame(()=> t.classList.add('show'));
+  setTimeout(()=>{
+    t.classList.remove('show');
+    setTimeout(()=> t.remove(), 300);
+  }, 2600);
+}
+
+/* ---- CLIPBOARD ---- */
+async function copyText(text, label){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(label || 'Copied!');
+  }catch(e){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast(label || 'Copied!'); } catch(err){ toast('Copy failed'); }
+    ta.remove();
+  }
+}
+
+/* ---- FAVORITES ---- */
+function getFavorites(){
+  try{ return JSON.parse(localStorage.getItem(LS.favorites)) || []; }catch(e){ return []; }
+}
+function saveFavorites(list){ localStorage.setItem(LS.favorites, JSON.stringify(list)); }
+function addFavorite(name, colors){
+  const list = getFavorites();
+  list.unshift({ id: Date.now().toString(36), name: sanitizeText(name || 'Untitled Palette'), colors: colors.slice(), created: Date.now() });
+  saveFavorites(list);
+  return list;
+}
+function deleteFavorite(id){
+  saveFavorites(getFavorites().filter(f=>f.id!==id));
+}
+function renameFavorite(id, newName){
+  const list = getFavorites();
+  const f = list.find(x=>x.id===id);
+  if(f) f.name = sanitizeText(newName);
+  saveFavorites(list);
+}
+
+/* ---- HIGH SCORES ---- */
+function getHighScores(){
+  try{ return JSON.parse(localStorage.getItem(LS.highscores)) || {}; }catch(e){ return {}; }
+}
+function setHighScore(game, score){
+  const scores = getHighScores();
+  if(!scores[game] || score > scores[game]) { scores[game] = score; localStorage.setItem(LS.highscores, JSON.stringify(scores)); return true; }
+  return false;
+}
+
+/* ---- SANITIZATION ---- */
+function sanitizeText(str){
+  return ('' + str).replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])).slice(0,80);
+}
+
+/* ---- EXPORTS: PNG ---- */
+function exportPaletteAsPNG(colors, filename){
+  const w = 900, headerH = 90, swatchH = 260;
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = headerH + swatchH;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,w,canvas.height);
+  ctx.fillStyle = '#111827';
+  ctx.font = '700 28px sans-serif';
+  ctx.fillText('Huefy', 24, 42);
+  ctx.font = '400 14px sans-serif';
+  ctx.fillStyle = '#6b7280';
+  ctx.fillText('huefy — find your perfect colors', 24, 66);
+  const sw = w / colors.length;
+  colors.forEach((hex,i)=>{
+    ctx.fillStyle = hex;
+    ctx.fillRect(i*sw, headerH, sw, swatchH - 40);
+    ctx.fillStyle = contrastRatio(hex,'#000000') > contrastRatio(hex,'#ffffff') ? '#000000' : '#ffffff';
+    ctx.font = '600 14px monospace';
+    ctx.fillText(hex.toUpperCase(), i*sw + 10, headerH + swatchH - 55);
+  });
+  ctx.fillStyle = '#f3f4f6';
+  ctx.fillRect(0, headerH + swatchH - 40, w, 40);
+  colors.forEach((hex,i)=>{
+    ctx.fillStyle = '#374151';
+    ctx.font = '500 12px monospace';
+    ctx.fillText(hex.toUpperCase(), i*sw + 10, headerH + swatchH - 14);
+  });
+  const link = document.createElement('a');
+  link.download = (filename || 'huefy-palette') + '.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ---- EXPORTS: CSS / JSON / TXT ---- */
+function paletteToCSS(colors){
+  let out = ':root {\n';
+  colors.forEach((hex,i)=> out += `  --color-${i+1}: ${hex.toUpperCase()};\n`);
+  out += '}\n';
+  return out;
+}
+function paletteToJSON(colors){
+  return JSON.stringify({ palette: colors.map(c=>c.toUpperCase()) }, null, 2);
+}
+function paletteToTXT(colors){
+  let out = 'Huefy Palette\n=============\n\n';
+  colors.forEach((hex,i)=>{
+    const rgb = hexToRgb(hex); const hsl = hexToHsl(hex);
+    out += `Color ${i+1}\n  HEX: ${hex.toUpperCase()}\n  RGB: rgb(${rgb.r}, ${rgb.g}, ${rgb.b})\n  HSL: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)\n\n`;
+  });
+  return out;
+}
+function downloadTextFile(content, filename, mime){
+  const blob = new Blob([content], { type: mime || 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ---- MINIMAL GIF89a ENCODER (no external library) ---- */
+/* Simple LZW-based GIF encoder producing an animated, looping GIF from RGB frames. */
+function GifWriter(){
+  this.bytes = [];
+}
+GifWriter.prototype.writeByte = function(b){ this.bytes.push(b & 0xFF); };
+GifWriter.prototype.writeBytes = function(arr){ for(let i=0;i<arr.length;i++) this.writeByte(arr[i]); };
+GifWriter.prototype.writeShort = function(s){ this.writeByte(s & 0xFF); this.writeByte((s>>8)&0xFF); };
+GifWriter.prototype.writeString = function(s){ for(let i=0;i<s.length;i++) this.writeByte(s.charCodeAt(i)); };
+
+function lzwEncode(minCodeSize, pixels){
+  const clearCode = 1 << minCodeSize;
+  const eoiCode = clearCode + 1;
+  let codeSize = minCodeSize + 1;
+  let nextCode = eoiCode + 1;
+  let dict = {};
+  const resetDict = () => { dict = {}; for(let i=0;i<clearCode;i++) dict[String.fromCharCode(i)] = i; nextCode = eoiCode + 1; codeSize = minCodeSize + 1; };
+  resetDict();
+  const output = [];
+  let curBits = 0, curVal = 0;
+  const emit = (code) => {
+    curVal |= (code << curBits);
+    curBits += codeSize;
+    while(curBits >= 8){ output.push(curVal & 0xFF); curVal >>= 8; curBits -= 8; }
+  };
+  emit(clearCode);
+  let w = String.fromCharCode(pixels[0]);
+  for(let i=1;i<pixels.length;i++){
+    const k = String.fromCharCode(pixels[i]);
+    const wk = w + k;
+    if(dict.hasOwnProperty(wk)){ w = wk; }
+    else{
+      emit(dict[w]);
+      dict[wk] = nextCode++;
+      if(nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
+      if(nextCode >= 4096){ emit(clearCode); resetDict(); }
+      w = k;
+    }
+  }
+  emit(dict[w]);
+  emit(eoiCode);
+  if(curBits > 0){ output.push(curVal & 0xFF); }
+  return output;
+}
+
+function buildPaletteTable(colorList){
+  // colorList: array of [r,g,b]; pad to power of 2, max 256
+  let size = 2;
+  while(size < colorList.length) size *= 2;
+  size = Math.min(size, 256);
+  const table = [];
+  for(let i=0;i<size;i++){
+    table.push(colorList[i] || [0,0,0]);
+  }
+  return table;
+}
+
+function encodeGif(width, height, frames, delayCs, globalPaletteRgb){
+  // frames: array of Uint8Array of indices (length w*h) matching globalPaletteRgb
+  const gw = new GifWriter();
+  const table = buildPaletteTable(globalPaletteRgb);
+  const bitsNeeded = Math.max(2, Math.ceil(Math.log2(table.length)));
+  gw.writeString('GIF89a');
+  gw.writeShort(width); gw.writeShort(height);
+  const gctFlag = 1, colorRes = 7, sortFlag = 0;
+  const gctSizeField = bitsNeeded - 1;
+  const packed = (gctFlag<<7) | (colorRes<<4) | (sortFlag<<3) | gctSizeField;
+  gw.writeByte(packed);
+  gw.writeByte(0); // bg color index
+  gw.writeByte(0); // pixel aspect ratio
+  table.forEach(c => { gw.writeByte(c[0]); gw.writeByte(c[1]); gw.writeByte(c[2]); });
+  // Netscape looping extension
+  gw.writeByte(0x21); gw.writeByte(0xFF); gw.writeByte(11);
+  gw.writeString('NETSCAPE2.0');
+  gw.writeByte(3); gw.writeByte(1); gw.writeShort(0); gw.writeByte(0);
+  frames.forEach(indices=>{
+    gw.writeByte(0x21); gw.writeByte(0xF9); gw.writeByte(4);
+    gw.writeByte(0x04); // disposal: restore to background
+    gw.writeShort(delayCs);
+    gw.writeByte(0); gw.writeByte(0);
+    gw.writeByte(0x2C);
+    gw.writeShort(0); gw.writeShort(0);
+    gw.writeShort(width); gw.writeShort(height);
+    gw.writeByte(0);
+    const minCodeSize = bitsNeeded;
+    gw.writeByte(minCodeSize);
+    const lzwBytes = lzwEncode(minCodeSize, indices);
+    let idx = 0;
+    while(idx < lzwBytes.length){
+      const chunk = lzwBytes.slice(idx, idx+255);
+      gw.writeByte(chunk.length);
+      gw.writeBytes(chunk);
+      idx += 255;
+    }
+    gw.writeByte(0);
+  });
+  gw.writeByte(0x3B);
+  return new Uint8Array(gw.bytes);
+}
+
+function exportPaletteAsGIF(colors, opts){
+  opts = opts || {};
+  const width = 480, height = 280;
+  const frameDelayCs = opts.frameDelayCs || 60; // in 1/100s
+  const transitionSteps = opts.steps || 8;
+  // Build a shared 256-color-safe palette by quantizing each swatch + transitions to nearest of a fixed web-safe-ish set
+  const paletteRgb = [];
+  const paletteMap = new Map();
+  const key = (r,g,b)=> `${r},${g},${b}`;
+  function addColor(r,g,b){
+    r = Math.round(r/17)*17; g = Math.round(g/17)*17; b = Math.round(b/17)*17; // 6x6x6-ish quantize (like web-safe)
+    const k = key(r,g,b);
+    if(!paletteMap.has(k) && paletteRgb.length < 250){
+      paletteMap.set(k, paletteRgb.length);
+      paletteRgb.push([r,g,b]);
+    }
+    return paletteMap.has(k) ? paletteMap.get(k) : 0;
+  }
+  const frames = [];
+  const n = colors.length;
+  const barW = Math.floor(width / n);
+  for(let step=0; step<=transitionSteps; step++){
+    const t = step / transitionSteps;
+    const indices = new Uint8Array(width*height);
+    for(let cIdx=0; cIdx<n; cIdx++){
+      const fromHex = colors[cIdx];
+      const toHex = colors[(cIdx+1)%n];
+      const mixed = mixHex(fromHex, toHex, t*100*0.15); // subtle drift each frame
+      const {r,g,b} = hexToRgb(mixed);
+      const paletteIndex = addColor(r,g,b);
+      for(let y=0;y<height-36;y++){
+        for(let x=cIdx*barW; x<Math.min((cIdx+1)*barW, width); x++){
+          indices[y*width+x] = paletteIndex;
+        }
+      }
+    }
+    // bottom label strip uses a fixed near-white / near-black
+    const bg = addColor(255,255,255);
+    for(let y=height-36;y<height;y++){
+      for(let x=0;x<width;x++) indices[y*width+x] = bg;
+    }
+    frames.push(indices);
+  }
+  const gifBytes = encodeGif(width, height, frames, frameDelayCs, paletteRgb);
+  const blob = new Blob([gifBytes], { type: 'image/gif' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'huefy-palette.gif';
+  a.click();
+  setTimeout(()=> URL.revokeObjectURL(url), 4000);
+}
+
+/* ---- REDUCED MOTION HELPER ---- */
+function prefersReducedMotion(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+/* ===================== SHARED UI WIRING ===================== */
+function openModal(id){ const m=document.getElementById(id); if(m){ m.classList.add('open'); const f=m.querySelector('input,button,select,textarea'); if(f) f.focus(); } }
+function closeModal(id){ const m=document.getElementById(id); if(m) m.classList.remove('open'); }
+document.addEventListener('click', (e)=>{
+  if(e.target.classList && e.target.classList.contains('huefy-modal-overlay')){ e.target.classList.remove('open'); }
+});
+
+function initSharedChrome(activeKey){
+  initTheme();
+  updateThemeIcon();
+  document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+  document.getElementById('shortcutsBtn')?.addEventListener('click', ()=> openModal('shortcutsModal'));
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('mainNav');
+  navToggle?.addEventListener('click', ()=>{
+    const open = nav.classList.toggle('mobile-open');
+    navToggle.setAttribute('aria-expanded', open ? 'true':'false');
+  });
+  if(activeKey){
+    document.querySelectorAll(`[data-nav="${activeKey}"]`).forEach(a=> a.classList.add('active'));
+  }
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.huefy-modal-overlay.open').forEach(m=> m.classList.remove('open'));
+    }
+  });
+}
+/* ===================== GAME PAGE ===================== */
+let currentGame = 'hex';
+let score = 0, streak = 0;
+
+const helpTexts = {
+  hex: 'A color flashes on screen — type your best guess at its HEX code. The closer you get, the higher your similarity score.',
+  memory: 'Watch the sequence of colors light up, then click them back in the same order. Levels get longer as you go.',
+  odd: 'One swatch in the grid is a slightly different shade. Click it before the grid gets trickier.',
+  match: 'A target color is shown with a few candidates below it — pick the one that\'s the closest real match.',
+  puzzle: 'Drag the scrambled swatches into the order the rule asks for, then check your work.'
+};
+
+function popFeedback(text, color){
+  const el = document.getElementById('feedbackPop');
+  el.textContent = text;
+  el.style.color = color || 'var(--brand-1)';
+  el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+}
+
+function updateStatBar(){
+  document.getElementById('statScore').textContent = score;
+  document.getElementById('statStreak').textContent = streak;
+  const scores = getHighScores();
+  document.getElementById('statHigh').textContent = scores[currentGame] || 0;
+}
+function addScore(points, correct){
+  if(correct){ score += points; streak += 1; } else { streak = 0; }
+  const improved = setHighScore(currentGame, score);
+  updateStatBar();
+  if(improved && correct) toast('New high score! &#127942;');
+}
+function resetGameStats(){
+  score = 0; streak = 0; updateStatBar();
+  toast('Score reset');
+}
+
+function switchGame(game){
+  currentGame = game;
+  document.querySelectorAll('.game-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+game).classList.add('active');
+  document.querySelectorAll('[data-game]').forEach(b=>{
+    b.classList.toggle('btn-primary', b.dataset.game===game);
+    b.classList.toggle('btn-outline', b.dataset.game!==game);
+    b.setAttribute('aria-selected', b.dataset.game===game ? 'true':'false');
+  });
+  document.getElementById('gameHelpText').textContent = helpTexts[game];
+  score = 0; streak = 0; updateStatBar();
+  if(game === 'hex') hexNewRound();
+  if(game === 'memory') memoryReset();
+  if(game === 'odd') oddNewRound();
+  if(game === 'match') matchNewRound();
+  if(game === 'puzzle') puzzleNewRound();
+}
+
+/* ---- GAME 1: GUESS THE HEX ---- */
+let hexTarget = '#FF6B6B';
+function hexNewRound(){
+  hexTarget = randomPaletteColor();
+  document.getElementById('hexTargetSwatch').style.background = hexTarget;
+  document.getElementById('hexGuessInput').value = '';
+  document.getElementById('hexResult').classList.remove('show');
+  document.getElementById('hexGuessInput').focus();
+}
+function hexSubmitGuess(){
+  let guess = document.getElementById('hexGuessInput').value.trim();
+  if(!guess) return;
+  if(!isValidHex(guess)){ toast('Enter a valid HEX code, e.g. #FF6B6B'); return; }
+  guess = normalizeHex(guess);
+  const sim = Math.round(hexSimilarity(hexTarget, guess));
+  document.getElementById('hexActualSwatch').style.background = hexTarget;
+  document.getElementById('hexGuessSwatch').style.background = guess;
+  document.getElementById('hexSimilarity').textContent = sim + '%';
+  let reaction;
+  if(sim >= 95) reaction = 'Nailed it 🎯';
+  else if(sim >= 80) reaction = "That's seriously close 👀";
+  else if(sim >= 60) reaction = 'Not bad!';
+  else reaction = 'Your monitor might be lying 😂';
+  document.getElementById('hexReaction').textContent = reaction;
+  document.getElementById('hexResult').classList.add('show');
+  const correct = sim >= 80;
+  addScore(sim, correct);
+  popFeedback(correct ? '+'+sim : 'Try again', correct ? '#22c55e' : '#ef4444');
+}
+
+/* ---- GAME 2: COLOR MEMORY ---- */
+let memorySeq = [], memoryUserSeq = [], memoryLevel = 1, memoryLives = 3, memoryColors = [], memoryWatching = false;
+function memoryReset(){
+  memoryLevel = 1; memoryLives = 3; memorySeq = [];
+  document.getElementById('memoryLevel').textContent = memoryLevel;
+  document.getElementById('memoryLives').textContent = memoryLives;
+  memoryBuildGrid();
+}
+function memoryBuildGrid(){
+  memoryColors = Array.from({length:8}, ()=> randomPaletteColor());
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = memoryColors.map((hex,i)=>`<button class="memory-cell" style="background:${hex}" data-idx="${i}" aria-label="Color cell ${i+1}"></button>`).join('');
+  grid.querySelectorAll('.memory-cell').forEach(cell=>{
+    cell.onclick = ()=> memoryHandleClick(parseInt(cell.dataset.idx), cell);
+  });
+}
+function memoryStartRound(){
+  if(memoryWatching) return;
+  memoryUserSeq = [];
+  memorySeq = Array.from({length: memoryLevel+2}, ()=> randInt(0,7));
+  memoryWatching = true;
+  document.getElementById('memoryStartBtn').disabled = true;
+  const cells = document.querySelectorAll('.memory-cell');
+  let i = 0;
+  const interval = setInterval(()=>{
+    cells.forEach(c=>c.classList.remove('lit'));
+    if(i < memorySeq.length){
+      cells[memorySeq[i]].classList.add('lit');
+      setTimeout(()=> cells[memorySeq[i]] && cells[memorySeq[i]].classList.remove('lit'), 420);
+      i++;
+    } else {
+      clearInterval(interval);
+      memoryWatching = false;
+      document.getElementById('memoryStartBtn').disabled = false;
+    }
+  }, 650);
+}
+function memoryHandleClick(idx, cell){
+  if(memoryWatching || !memorySeq.length) return;
+  memoryUserSeq.push(idx);
+  const pos = memoryUserSeq.length - 1;
+  if(memorySeq[pos] === idx){
+    cell.classList.add('correct'); setTimeout(()=>cell.classList.remove('correct'), 300);
+    if(memoryUserSeq.length === memorySeq.length){
+      addScore(memoryLevel*10, true);
+      popFeedback('Level up!', '#22c55e');
+      memoryLevel++;
+      document.getElementById('memoryLevel').textContent = memoryLevel;
+      memorySeq = [];
+      setTimeout(memoryBuildGrid, 400);
+    }
+  } else {
+    cell.classList.add('wrong'); setTimeout(()=>cell.classList.remove('wrong'), 400);
+    memoryLives--;
+    document.getElementById('memoryLives').textContent = Math.max(memoryLives,0);
+    addScore(0, false);
+    popFeedback('Miss!', '#ef4444');
+    memorySeq = [];
+    if(memoryLives <= 0){
+      toast('Game over — final level ' + memoryLevel);
+      memoryReset();
+    } else {
+      memoryBuildGrid();
+    }
+  }
+}
+
+/* ---- GAME 3: ODD COLOR OUT ---- */
+let oddDifficulty = 1, oddCorrectIdx = 0;
+function oddNewRound(){
+  const count = Math.min(6 + oddDifficulty, 12);
+  const base = randomPaletteColor();
+  const baseHsl = hexToHsl(base);
+  const diffAmount = Math.max(18 - oddDifficulty*1.5, 5);
+  oddCorrectIdx = randInt(0,count-1);
+  const grid = document.getElementById('oddGrid');
+  grid.style.gridTemplateColumns = `repeat(${Math.min(count,4)},1fr)`;
+  let html = '';
+  for(let i=0;i<count;i++){
+    const l = i === oddCorrectIdx ? clamp(baseHsl.l + diffAmount * (Math.random()<0.5?-1:1), 4, 96) : baseHsl.l;
+    const hex = hslToHex(baseHsl.h, baseHsl.s, l);
+    html += `<div class="oddcolor-swatch" style="background:${hex}" data-idx="${i}"></div>`;
+  }
+  grid.innerHTML = html;
+  grid.querySelectorAll('.oddcolor-swatch').forEach(el=>{
+    el.onclick = ()=>{
+      const idx = parseInt(el.dataset.idx);
+      if(idx === oddCorrectIdx){
+        el.classList.add('correct-pick');
+        addScore(10 + oddDifficulty*2, true);
+        popFeedback('Sharp eyes!', '#22c55e');
+        oddDifficulty++;
+        setTimeout(oddNewRound, 500);
+      } else {
+        el.classList.add('wrong-pick');
+        addScore(0, false);
+        popFeedback('Not quite', '#ef4444');
+        setTimeout(()=> el.classList.remove('wrong-pick'), 400);
+      }
+    };
+  });
+}
+
+/* ---- GAME 4: COLOR MATCH ---- */
+let matchTargetHex = '', matchCorrectHex = '';
+function matchNewRound(){
+  matchTargetHex = randomPaletteColor();
+  document.getElementById('matchTarget').style.background = matchTargetHex;
+  const options = [matchTargetHex];
+  const hsl = hexToHsl(matchTargetHex);
+  for(let i=0;i<3;i++){
+    options.push(hslToHex(clamp(hsl.h+randInt(-40,40),0,360), clamp(hsl.s+randInt(-30,30),10,100), clamp(hsl.l+randInt(-30,30),5,95)));
+  }
+  for(let i=options.length-1;i>0;i--){ const j=randInt(0,i); [options[i],options[j]]=[options[j],options[i]]; }
+  matchCorrectHex = matchTargetHex;
+  const wrap = document.getElementById('matchOptions');
+  wrap.innerHTML = options.map(h=>`<div class="match-swatch" style="background:${h}" data-hex="${h}"></div>`).join('');
+  wrap.querySelectorAll('.match-swatch').forEach(el=>{
+    el.onclick = ()=>{
+      const isCorrect = el.dataset.hex === matchCorrectHex;
+      el.classList.add(isCorrect ? 'correct-pick':'wrong-pick');
+      addScore(15, isCorrect);
+      popFeedback(isCorrect ? 'Correct!' : 'Missed it', isCorrect ? '#22c55e':'#ef4444');
+      setTimeout(matchNewRound, 550);
+    };
+  });
+}
+
+/* ---- GAME 5: PALETTE PUZZLE ---- */
+let puzzleRuleType = 'light-dark';
+const puzzleRules = [
+  { id:'light-dark', label:'Arrange the colors from Light to Dark', key: hex => hexToHsl(hex).l, dir:-1 },
+  { id:'warm-cool', label:'Arrange the colors from Warm to Cool', key: hex => { const h=hexToHsl(hex).h; const dist = Math.min(Math.abs(h-30), Math.abs(h-390)); return dist; }, dir:1 },
+  { id:'sat', label:'Arrange the colors from Low Saturation to High Saturation', key: hex => hexToHsl(hex).s, dir:1 }
+];
+let puzzleColors = [];
+function puzzleNewRound(){
+  const rule = pick(puzzleRules);
+  puzzleRuleType = rule.id;
+  document.getElementById('puzzleRule').textContent = rule.label;
+  puzzleColors = Array.from({length:6}, ()=> randomPaletteColor());
+  for(let i=puzzleColors.length-1;i>0;i--){ const j=randInt(0,i); [puzzleColors[i],puzzleColors[j]]=[puzzleColors[j],puzzleColors[i]]; }
+  renderPuzzle();
+}
+function renderPuzzle(){
+  const strip = document.getElementById('puzzleStrip');
+  strip.innerHTML = puzzleColors.map((hex,i)=>`<div class="puzzle-swatch" style="background:${hex}" draggable="true" data-idx="${i}">${hex.toUpperCase()}</div>`).join('');
+  strip.querySelectorAll('.puzzle-swatch').forEach(el=>{
+    el.addEventListener('dragstart', ()=> el.classList.add('dragging'));
+    el.addEventListener('dragend', ()=>{
+      el.classList.remove('dragging');
+      const newOrder = [...strip.querySelectorAll('.puzzle-swatch')].map(e=>e.style.backgroundColor);
+    });
+  });
+  strip.ondragover = (e)=>{
+    e.preventDefault();
+    const dragging = strip.querySelector('.dragging');
+    if(!dragging) return;
+    const after = [...strip.querySelectorAll('.puzzle-swatch:not(.dragging)')].reduce((closest,child)=>{
+      const box = child.getBoundingClientRect();
+      const offset = e.clientX - box.left - box.width/2;
+      if(offset<0 && offset>closest.offset){ return {offset, element:child}; }
+      return closest;
+    }, {offset:-Infinity}).element;
+    if(after == null) strip.appendChild(dragging); else strip.insertBefore(dragging, after);
+  };
+}
+function puzzleCheckOrder(){
+  const rule = puzzleRules.find(r=>r.id===puzzleRuleType);
+  const order = [...document.querySelectorAll('.puzzle-swatch')].map(el=> el.style.background);
+  // convert rgb() string back to hex for scoring using nearest match from puzzleColors
+  const hexOrder = order.map(rgbStr=>{
+    const m = rgbStr.match(/\d+/g);
+    return m ? rgbToHex(+m[0],+m[1],+m[2]) : '#000000';
+  });
+  const values = hexOrder.map(rule.key);
+  let sorted = true;
+  for(let i=0;i<values.length-1;i++){
+    if(rule.dir === -1 ? values[i] < values[i+1] : values[i] > values[i+1]){ sorted = false; break; }
+  }
+  addScore(30, sorted);
+  popFeedback(sorted ? 'Perfect order!' : 'Not quite sorted', sorted ? '#22c55e':'#ef4444');
+  if(sorted) setTimeout(puzzleNewRound, 700);
+}
+
+/* ---- INIT ---- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  initSharedChrome('games');
+  document.querySelectorAll('[data-game]').forEach(btn=>{
+    btn.onclick = ()=> switchGame(btn.dataset.game);
+  });
+  document.getElementById('btnResetGame').onclick = resetGameStats;
+  document.getElementById('hexGuessBtn').onclick = hexSubmitGuess;
+  document.getElementById('hexNextBtn').onclick = hexNewRound;
+  document.getElementById('hexGuessInput').addEventListener('keydown', e=>{ if(e.key==='Enter') hexSubmitGuess(); });
+  document.getElementById('memoryStartBtn').onclick = memoryStartRound;
+  document.getElementById('oddNextBtn').onclick = oddNewRound;
+  document.getElementById('puzzleCheckBtn').onclick = puzzleCheckOrder;
+  document.getElementById('puzzleNewBtn').onclick = puzzleNewRound;
+  switchGame('hex');
+});
+</script>
+</body>
+</html>
